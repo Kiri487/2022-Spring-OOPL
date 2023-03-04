@@ -96,15 +96,21 @@ namespace game_framework {
 	private:
 		void show_image_by_level();
 		void show_text_by_level();
+		void show_transition();
 		void text_border(CDC *pDC, int x, int y, int size, string s); // 文字邊框
+		CMovingBitmap transition;
 		CMovingBitmap background;
 		CMovingBitmap map;
 		CMovingBitmap character;
-		CMovingBitmap music;
-		CMovingBitmap sound;
-		CMovingBitmap exit;
-		CMovingBitmap box1;
+		CMovingBitmap music_icon;
+		CMovingBitmap sound_icon;
+		CMovingBitmap exit_icon;
+		CMovingBitmap sbox1;
+		CMovingBitmap sbox2;
+		CMovingBitmap sbox3;
 		CMovingBitmap goal1;
+		CMovingBitmap goal2;
+		CMovingBitmap goal3;
 		int level = 1;
 	};
 

@@ -27,13 +27,22 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-
-	
-	
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
+	transition.LoadBitmapByString({
+	"resources/transition1.bmp",
+	"resources/transition2.bmp",
+	"resources/transition3.bmp",
+	"resources/transition4.bmp",
+	"resources/transition5.bmp",
+	"resources/transition6.bmp",
+		}, RGB(0, 0, 255));
+	transition.SetTopLeft(0, 0);
+	transition.SetAnimation(70, true);
+	transition.ToggleAnimation();
+
 	background.LoadBitmapByString({
 	"resources/1_background.bmp",
 	"resources/2_background.bmp",
@@ -47,38 +56,84 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	"resources/1_map.bmp",
 	"resources/2_map.bmp"
 		}, RGB(0, 0, 255));
+	map.SetTopLeft(526, 157);
 
-	music.LoadBitmapByString({ "resources/music_on.bmp", "resources/music_off.bmp" });
-	music.SetTopLeft(1369, 25);
+	music_icon.LoadBitmapByString({ "resources/music_on.bmp", "resources/music_off.bmp" });
+	music_icon.SetTopLeft(1369, 25);
 
-	sound.LoadBitmapByString({ "resources/sound_on.bmp", "resources/sound_off.bmp" });
-	sound.SetTopLeft(1445, 25);
+	sound_icon.LoadBitmapByString({ "resources/sound_on.bmp", "resources/sound_off.bmp" });
+	sound_icon.SetTopLeft(1445, 25);
 
-	exit.LoadBitmapByString({ "resources/exit.bmp" });
-	exit.SetTopLeft(25, 25);
+	exit_icon.LoadBitmapByString({ "resources/exit.bmp" });
+	exit_icon.SetTopLeft(25, 25);
 
-	character.LoadBitmapByString({ "resources/bob1.bmp" }, RGB(0, 0, 255));
+	character.LoadBitmapByString({ "resources/bob1.bmp", "resources/bob2.bmp", "resources/bob3.bmp" }, RGB(0, 0, 255));
+	character.SetAnimation(165, false);
+	character.SetTopLeft(711, 215);
+	
 
-	box1.LoadBitmapByString({ "resources/1_box.bmp" });
-	box1.SetTopLeft(802, 228);
+	sbox1.LoadBitmapByString({ "resources/box_s.bmp" });
+	sbox2.LoadBitmapByString({ "resources/box_s.bmp" });
+	sbox3.LoadBitmapByString({ "resources/box_s.bmp" });
+	sbox1.SetTopLeft(953, 251);
 
-	goal1.LoadBitmapByString({ "resources/1_goal.bmp" }, RGB(0, 0, 255));
-	goal1.SetTopLeft(802, 471);
-
+	goal1.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
+	goal2.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
+	goal3.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
+	goal1.SetTopLeft(953, 583);
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	
+	// enter
+	if (nChar == VK_RETURN) {
+		// !!! change level test !!! 
+		level++; 
+		if (level == 2) {
+			map.SetTopLeft(445, 174);
+			goal1.SetTopLeft(705, 184);
+			goal2.SetTopLeft(954, 184);
+			goal3.SetTopLeft(954, 350);
+			sbox1.SetTopLeft(622, 267);
+			sbox2.SetTopLeft(705, 267);
+			sbox3.SetTopLeft(788, 267);
+			character.SetTopLeft(463, 231);
+			transition.ToggleAnimation();
+		}
+		// !!! change level test !!! 
+	}
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	level++;
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
 {
+	// music_on_off
+	if (point.x >= music_icon.GetLeft() && point.x <= music_icon.GetLeft() + music_icon.GetWidth() && point.y >= music_icon.GetTop() && point.y <= music_icon.GetTop() + music_icon.GetHeight()) {
+		if (music_icon.GetFrameIndexOfBitmap() == 0) {
+			music_icon.SetFrameIndexOfBitmap(1);
+		}
+		else {
+			music_icon.SetFrameIndexOfBitmap(0);
+		}	
+	}
+
+	//sound_on_off
+	if (point.x >= sound_icon.GetLeft() && point.x <= sound_icon.GetLeft() + sound_icon.GetWidth() && point.y >= sound_icon.GetTop() && point.y <= sound_icon.GetTop() + sound_icon.GetHeight()) {
+		if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+			sound_icon.SetFrameIndexOfBitmap(1);
+		}
+		else {
+			sound_icon.SetFrameIndexOfBitmap(0);
+		}
+	}
+
+	//exit
+	if (point.x >= exit_icon.GetLeft() && point.x <= exit_icon.GetLeft() + exit_icon.GetWidth() && point.y >= exit_icon.GetTop() && point.y <= exit_icon.GetTop() + exit_icon.GetHeight()) {
+		// to do
+	}
 }
 
 void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
@@ -101,30 +156,33 @@ void CGameStateRun::OnShow()
 {
 	show_image_by_level();
 	show_text_by_level();
+	show_transition();
 }
 
 void CGameStateRun::show_image_by_level() {
 	
-	if (level <= 6) {
+	if (level <= 16) {
 		background.SetFrameIndexOfBitmap(level - 1);
 		background.ShowBitmap();
 		map.SetFrameIndexOfBitmap(level - 1);
 		map.ShowBitmap();
 		character.ShowBitmap();
-		music.ShowBitmap();
-		sound.ShowBitmap();
-		exit.ShowBitmap();
+		music_icon.ShowBitmap();
+		sound_icon.ShowBitmap();
+		exit_icon.ShowBitmap();
 		
 		if (level == 1) {
-			map.SetTopLeft(487, 136);
-			character.SetTopLeft(625, 207);
-			box1.ShowBitmap();
 			goal1.ShowBitmap();
+			sbox1.ShowBitmap();
 		}
 
 		if (level == 2) {
-			map.SetTopLeft(501, 233);
-			character.SetTopLeft(522, 330);
+			goal1.ShowBitmap();
+			goal2.ShowBitmap();
+			goal3.ShowBitmap();
+			sbox1.ShowBitmap();
+			sbox2.ShowBitmap();
+			sbox3.ShowBitmap();
 		}
 	}
 }
@@ -148,6 +206,12 @@ void CGameStateRun::show_text_by_level() {
 	}
 
 	CDDraw::ReleaseBackCDC();
+}
+
+void CGameStateRun::show_transition() {
+	if (level <= 16) {
+		transition.ShowBitmap();
+	}
 }
 
 void CGameStateRun::text_border(CDC *pDC, int x, int y, int size, string s) {

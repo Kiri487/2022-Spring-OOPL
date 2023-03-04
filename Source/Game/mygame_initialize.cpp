@@ -30,7 +30,7 @@ void CGameStateInit::OnInit()
 
 	title.LoadBitmapByString({ "resources/title1.bmp", "resources/title2.bmp" }, RGB(0, 0, 255));
 	title.SetTopLeft(631, 349);
-	title.SetAnimation(300, false);
+	title.SetAnimation(200, false);
 
 	//
 	// 此OnInit動作會接到CGameStaterRun::OnInit()，所以進度還沒到100%
