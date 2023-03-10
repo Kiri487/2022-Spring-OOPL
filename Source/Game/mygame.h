@@ -108,6 +108,9 @@ namespace game_framework {
 		CMovingBitmap sbox1;
 		CMovingBitmap sbox2;
 		CMovingBitmap sbox3;
+		CMovingBitmap mbox;
+		CMovingBitmap lbox;
+		CMovingBitmap baffle;
 		CMovingBitmap goal1;
 		CMovingBitmap goal2;
 		CMovingBitmap goal3;

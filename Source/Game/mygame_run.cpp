@@ -54,7 +54,10 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 	map.LoadBitmapByString({
 	"resources/1_map.bmp",
-	"resources/2_map.bmp"
+	"resources/2_map.bmp",
+	"resources/3_map.bmp",
+	"resources/4_map.bmp",
+	"resources/5_map.bmp"
 		}, RGB(0, 0, 255));
 	map.SetTopLeft(526, 157);
 
@@ -72,10 +75,14 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	character.SetTopLeft(711, 215);
 	
 
-	sbox1.LoadBitmapByString({ "resources/box_s.bmp" });
-	sbox2.LoadBitmapByString({ "resources/box_s.bmp" });
-	sbox3.LoadBitmapByString({ "resources/box_s.bmp" });
+	sbox1.LoadBitmapByString({ "resources/box_s.bmp", "resources/box_s_in_hole.bmp" });
+	sbox2.LoadBitmapByString({ "resources/box_s.bmp", "resources/box_s_in_hole.bmp" });
+	sbox3.LoadBitmapByString({ "resources/box_s.bmp", "resources/box_s_in_hole.bmp" });
 	sbox1.SetTopLeft(953, 251);
+
+	mbox.LoadBitmapByString({ "resources/box_m.bmp" });
+
+	baffle.LoadBitmapByString({ "resources/baffle_desert.bmp" });
 
 	goal1.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
 	goal2.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
