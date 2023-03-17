@@ -100,7 +100,6 @@ namespace game_framework {
 		void text_border(CDC *pDC, int x, int y, int size, string s); // 文字邊框
 		CMovingBitmap transition;
 		CMovingBitmap background;
-		CMovingBitmap map;
 		CMovingBitmap character;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
@@ -110,10 +109,6 @@ namespace game_framework {
 		CMovingBitmap sbox3;
 		CMovingBitmap mbox;
 		CMovingBitmap lbox;
-		CMovingBitmap baffle;
-		CMovingBitmap goal1;
-		CMovingBitmap goal2;
-		CMovingBitmap goal3;
 		int level = 1;
 	};
 

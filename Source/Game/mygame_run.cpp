@@ -52,15 +52,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		});
 	background.SetTopLeft(0, 0);
 
-	map.LoadBitmapByString({
-	"resources/1_map.bmp",
-	"resources/2_map.bmp",
-	"resources/3_map.bmp",
-	"resources/4_map.bmp",
-	"resources/5_map.bmp"
-		}, RGB(0, 0, 255));
-	map.SetTopLeft(526, 157);
-
 	music_icon.LoadBitmapByString({ "resources/music_on.bmp", "resources/music_off.bmp" });
 	music_icon.SetTopLeft(1369, 25);
 
@@ -72,22 +63,12 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 	character.LoadBitmapByString({ "resources/bob1.bmp", "resources/bob2.bmp", "resources/bob3.bmp" }, RGB(0, 0, 255));
 	character.SetAnimation(165, false);
-	character.SetTopLeft(711, 215);
 	
-
-	sbox1.LoadBitmapByString({ "resources/box_s.bmp", "resources/box_s_in_hole.bmp" });
-	sbox2.LoadBitmapByString({ "resources/box_s.bmp", "resources/box_s_in_hole.bmp" });
-	sbox3.LoadBitmapByString({ "resources/box_s.bmp", "resources/box_s_in_hole.bmp" });
-	sbox1.SetTopLeft(953, 251);
+	sbox1.LoadBitmapByString({ "resources/box_s.bmp" });
+	sbox2.LoadBitmapByString({ "resources/box_s.bmp" });
+	sbox3.LoadBitmapByString({ "resources/box_s.bmp" });
 
 	mbox.LoadBitmapByString({ "resources/box_m.bmp" });
-
-	baffle.LoadBitmapByString({ "resources/baffle_desert.bmp" });
-
-	goal1.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
-	goal2.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
-	goal3.LoadBitmapByString({ "resources/goal.bmp" }, RGB(0, 0, 255));
-	goal1.SetTopLeft(953, 583);
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -96,15 +77,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_RETURN) {
 		// !!! change level test !!! 
 		level++; 
-		if (level == 2) {
-			map.SetTopLeft(445, 174);
-			goal1.SetTopLeft(705, 184);
-			goal2.SetTopLeft(954, 184);
-			goal3.SetTopLeft(954, 350);
-			sbox1.SetTopLeft(622, 267);
-			sbox2.SetTopLeft(705, 267);
-			sbox3.SetTopLeft(788, 267);
-			character.SetTopLeft(463, 231);
+		if (level <= 16) {
 			transition.ToggleAnimation();
 		}
 		// !!! change level test !!! 
@@ -171,26 +144,9 @@ void CGameStateRun::show_image_by_level() {
 	if (level <= 16) {
 		background.SetFrameIndexOfBitmap(level - 1);
 		background.ShowBitmap();
-		map.SetFrameIndexOfBitmap(level - 1);
-		map.ShowBitmap();
-		character.ShowBitmap();
 		music_icon.ShowBitmap();
 		sound_icon.ShowBitmap();
 		exit_icon.ShowBitmap();
-		
-		if (level == 1) {
-			goal1.ShowBitmap();
-			sbox1.ShowBitmap();
-		}
-
-		if (level == 2) {
-			goal1.ShowBitmap();
-			goal2.ShowBitmap();
-			goal3.ShowBitmap();
-			sbox1.ShowBitmap();
-			sbox2.ShowBitmap();
-			sbox3.ShowBitmap();
-		}
 	}
 }
 
