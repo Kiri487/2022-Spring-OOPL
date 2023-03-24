@@ -10,7 +10,7 @@ Map::Map(int width, int height) {
 	}
 }
 
-void Map::matrix(int level) {
+void Map::Matrix(int level) {
 	std::string filename = "map/map" + std::to_string(level) + ".txt";
 	std::ifstream ifs(filename);
 
@@ -23,5 +23,8 @@ void Map::matrix(int level) {
 	ifs.close();
 }
 
+void Map::Show() {
+
+}
 
 
