@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "map.h"
+#include <fstream>
 
 Map::Map(int width, int height) {
 	this->width = width;
@@ -9,27 +10,17 @@ Map::Map(int width, int height) {
 	}
 }
 
-void Map::matrix() {
-/*
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
-			if (data[i][j] == 0) {
-				data[i][j] = 1;
-			}
-			else {
-				data[i][j] = 0;
-			}
+void Map::matrix(int level) {
+	std::string filename = "map/map" + std::to_string(level) + ".txt";
+	std::ifstream ifs(filename);
+
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			ifs >> data[i][j];
 		}
 	}
-*/
-	data = {
-		{1, 1, 1, 1, 1, 1},
-		{1, 1, 1, 0, 0, 1},
-		{1, 1, 1, 0, 0, 1},
-		{0, 0, 0, 0, 0, 1},
-		{0, 0, 0, 0, 0, 1},
-		{0, 0, 0, 0, 0, 1}
-	};
+
+	ifs.close();
 }
 
 
