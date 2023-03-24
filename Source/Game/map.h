@@ -2,9 +2,6 @@
 #include <vector>
 #include <string>
 
-// 地圖定義
-#define MAP1 "Resources/map1.txt"
-
 class Map {
 private:
 	int width, height;
@@ -13,7 +10,8 @@ private:
 
 public:
 	Map(int width, int height);
-	void matrix(int level);
+	void Matrix(int level);
+	void Show();
 };
 
 
