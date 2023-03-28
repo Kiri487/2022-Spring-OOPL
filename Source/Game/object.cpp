@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "map.h"
 #include "object.h"
+#include "map.h"
 
 void Object::ShowObjectImage() { 
 	
