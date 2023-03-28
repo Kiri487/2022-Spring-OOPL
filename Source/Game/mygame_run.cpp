@@ -49,6 +49,17 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	"resources/3_background.bmp",
 	"resources/4_background.bmp",
 	"resources/5_background.bmp",
+	"resources/6_background.bmp",
+	"resources/7_background.bmp",
+	"resources/8_background.bmp",
+	"resources/9_background.bmp",
+	"resources/10_background.bmp",
+	"resources/11_background.bmp",
+	"resources/12_background.bmp",
+	"resources/13_background.bmp",
+	"resources/14_background.bmp",
+	"resources/15_background.bmp",
+	"resources/16_background.bmp"
 		});
 	background.SetTopLeft(0, 0);
 
