@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "map.h"
+#include "object.h"
 
-void Block::ShowObjectImage() { 
+void Object::ShowObjectImage() { 
 	
 }
