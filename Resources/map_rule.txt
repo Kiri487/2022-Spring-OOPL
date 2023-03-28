@@ -1,0 +1,7 @@
+0 InpassibleBlock
+1 PassibleBlock
+2 Character
+3 Sbox
+4 Mbox
+5 Lbox
+6 Hole
