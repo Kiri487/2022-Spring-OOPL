@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <vector>
-#include <string>
+#include "Object.h"
 
 class Map {
 private:
@@ -11,7 +11,7 @@ private:
 public:
 	Map(int width, int height);
 	void Matrix(int level);
-	void Show();
+	void Show(int level);
 };
 
 

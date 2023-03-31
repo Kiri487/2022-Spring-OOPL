@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "map.h"
 #include <fstream>
+#include <string>
 
 Map::Map(int width, int height) {
 	this->width = width;
@@ -23,8 +24,8 @@ void Map::Matrix(int level) {
 	ifs.close();
 }
 
-void Map::Show() {
-
+void Map::Show(int level) {
+	Matrix(level);
 }
 
 
