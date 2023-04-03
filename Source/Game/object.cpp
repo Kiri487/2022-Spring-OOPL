@@ -3,31 +3,36 @@
 #include "map.h"
 
 void Object::ShowObjectImage() {
+	if (objecttype != ImpassibleBlock && objecttype != PassibleBlock) {
+		image.ShowBitmap();
+	}
 }
 
-void Object::LoadObjectImage(ObjectType objecttybe) {
-	switch (objecttybe) {
+void Object::LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori) {
+	this->objecttype = objecttype;
+	switch (objecttype) {
 		case Character:
-			charater.LoadBitmapByString({ "resources/bob1.bmp", "resources/bob2.bmp", "resources/bob3.bmp"}, RGB(0, 0, 255));
-			charater.SetTopLeft(1369, 25);
-			charater.SetAnimation(165, false);
+			image.LoadBitmapByString({ "resources/bob1.bmp", "resources/bob2.bmp", "resources/bob3.bmp"}, RGB(0, 0, 255));
+			image.SetAnimation(165, false);
 			break;
 		case Sbox:
-			sbox.LoadBitmapByString({ "resources/sbox.bmp" }, RGB(0, 0, 255));
-			sbox.SetTopLeft(1369, 25);
+			image.LoadBitmapByString({ "resources/box_s.bmp" }, RGB(0, 0, 255));
 			break;
 		case Mbox:
-			mbox.LoadBitmapByString({ "resources/mbox.bmp" }, RGB(0, 0, 255));
-			mbox.SetTopLeft(1369, 25);
+			image.LoadBitmapByString({ "resources/box_m.bmp" }, RGB(0, 0, 255));
 			break;
 		case Lbox:
-			lbox.LoadBitmapByString({ "resources/lbox.bmp" }, RGB(0, 0, 255));
-			lbox.SetTopLeft(1369, 25);
+			image.LoadBitmapByString({ "resources/box_l.bmp" }, RGB(0, 0, 255));
 			break;
 		case Hole:
-			hole.LoadBitmapByString({ "resources/hole.bmp" }, RGB(0, 0, 255));
-			hole.SetTopLeft(1369, 25);
+			image.LoadBitmapByString({ "resources/hole.bmp" }, RGB(0, 0, 255));
+			break;
+		default:
 			break;
 	}
+	if (objecttype != ImpassibleBlock && objecttype != PassibleBlock) {
+		image.SetTopLeft(ori.x + 83 * now.x, ori.y + 83 * now.y);
+	}
+	
 }
 
