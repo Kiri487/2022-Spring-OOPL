@@ -20,7 +20,7 @@ private:
 	game_framework::CMovingBitmap sbox;
 	game_framework::CMovingBitmap mbox;
 	game_framework::CMovingBitmap lbox;
-
+	game_framework::CMovingBitmap hole;
 public:
 	void ShowObjectImage();
 	void LoadObjectImage(ObjectType objecttybe);
