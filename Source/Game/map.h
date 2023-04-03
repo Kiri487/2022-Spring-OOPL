@@ -1,17 +1,17 @@
 ﻿#pragma once
 #include <vector>
-#include <string>
+#include "Object.h"
 
 class Map {
 private:
-	int width, height;
-	std::vector<std::vector<int>> data;
+	std::vector<std::vector<Object>> data;
 	int level;
 
 public:
-	Map(int width, int height);
+	int width, height;
 	void Matrix(int level);
 	void Show();
+	
 };
 
 
