@@ -1,7 +1,9 @@
+#pragma once
+
 #include "../Library/gameutil.h"
 
 enum ObjectType {
-	InpassibleBlock,
+	ImpassibleBlock,
 	PassibleBlock,
 	Character,
 	Sbox,
@@ -12,10 +14,9 @@ enum ObjectType {
 
 class Object {
 private:
-	ObjectType objecttybe;
+	ObjectType objecttype;
 	game_framework::CMovingBitmap image;
-
 public:
-	void ShowObjectImage();			
-	
+	void ShowObjectImage();
+	void LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori);
 };
