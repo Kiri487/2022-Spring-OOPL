@@ -37,7 +37,7 @@
  *      2. Replace the demonstration of animation as a new bouncing ball.
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
-
+#include "map.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -90,6 +90,7 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
+		int level = 1;
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
@@ -100,16 +101,10 @@ namespace game_framework {
 		void text_border(CDC *pDC, int x, int y, int size, string s); // 文字邊框
 		CMovingBitmap transition;
 		CMovingBitmap background;
-		CMovingBitmap character;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
 		CMovingBitmap exit_icon;
-		CMovingBitmap sbox1;
-		CMovingBitmap sbox2;
-		CMovingBitmap sbox3;
-		CMovingBitmap mbox;
-		CMovingBitmap lbox;
-		int level = 1;
+		Map test;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
