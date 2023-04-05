@@ -19,4 +19,5 @@ private:
 public:
 	void ShowObjectImage();
 	void LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori);
+	ObjectType ReturnObjectType();
 };
