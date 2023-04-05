@@ -37,7 +37,10 @@
  *      2. Replace the demonstration of animation as a new bouncing ball.
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
+
 #include "map.h"
+#include "choose_level.h"
+#include "text_art.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -66,10 +69,10 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
 		void draw_text();
-		void text_border(CDC *pDC, int x, int y, int size, string s); // 文字邊框
 		CMovingBitmap logo;								// csie 的 logo
 		CMovingBitmap background;
 		CMovingBitmap title;
+		TextArt text_art;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -98,13 +101,14 @@ namespace game_framework {
 		void show_image_by_level();
 		void show_text_by_level();
 		void show_transition();
-		void text_border(CDC *pDC, int x, int y, int size, string s); // 文字邊框
 		CMovingBitmap transition;
 		CMovingBitmap background;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
 		CMovingBitmap exit_icon;
 		Map test;
+		ChooseLevel choose_level;
+		TextArt text_art;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

@@ -63,7 +63,7 @@ void CGameStateInit::draw_text() {
 	CDC *pDC = CDDraw::GetBackCDC();
 
 	CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
-	text_border(pDC, 545,632, 4, "Press any key to start");
+	text_art.TextBorder(pDC, 545,632, 4, "Press any key to start");
 
 	CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 	CTextDraw::Print(pDC, 545, 632, "Press any key to start");
@@ -71,17 +71,4 @@ void CGameStateInit::draw_text() {
 	CTextDraw::Print(pDC, 15, 695, "By NTUT-Kiri, NTUT-Shuan");
 
 	CDDraw::ReleaseBackCDC();
-}
-
-void CGameStateInit::text_border(CDC *pDC, int x, int y, int size, string s) {
-	for (int i = 0; i < size; i++) {
-		CTextDraw::Print(pDC, x, y + i, s);
-		CTextDraw::Print(pDC, x, y - i, s);
-		CTextDraw::Print(pDC, x + i, y, s);
-		CTextDraw::Print(pDC, x - i, y, s);
-		CTextDraw::Print(pDC, x + i, y + i, s);
-		CTextDraw::Print(pDC, x + i, y - i, s);
-		CTextDraw::Print(pDC, x - i, y + i, s);
-		CTextDraw::Print(pDC, x - i, y - i, s);
-	}
 }
