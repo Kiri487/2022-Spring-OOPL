@@ -36,3 +36,6 @@ void Object::LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori) {
 	
 }
 
+ObjectType Object::ReturnObjectType() {
+	return objecttype;
+}
