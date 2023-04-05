@@ -38,12 +38,9 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 
-<<<<<<< Updated upstream
-=======
 #include "map.h"
 #include "choose_level.h"
 #include "text_art.h"
->>>>>>> Stashed changes
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -96,6 +93,7 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
+		int level = 1;
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
@@ -105,22 +103,12 @@ namespace game_framework {
 		void show_transition();
 		CMovingBitmap transition;
 		CMovingBitmap background;
-		CMovingBitmap character;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
 		CMovingBitmap exit_icon;
-<<<<<<< Updated upstream
-		CMovingBitmap sbox1;
-		CMovingBitmap sbox2;
-		CMovingBitmap sbox3;
-		CMovingBitmap mbox;
-		CMovingBitmap lbox;
-		int level = 1;
-=======
 		Map test;
 		ChooseLevel choose_level;
 		TextArt text_art;
->>>>>>> Stashed changes
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
