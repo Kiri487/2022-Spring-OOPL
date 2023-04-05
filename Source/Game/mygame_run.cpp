@@ -72,6 +72,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	exit_icon.LoadBitmapByString({ "resources/exit.bmp" });
 	exit_icon.SetTopLeft(25, 25);
 
+<<<<<<< Updated upstream
 	character.LoadBitmapByString({ "resources/bob1.bmp", "resources/bob2.bmp", "resources/bob3.bmp" }, RGB(0, 0, 255));
 	character.SetAnimation(165, false);
 	
@@ -80,6 +81,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	sbox3.LoadBitmapByString({ "resources/box_s.bmp" });
 
 	mbox.LoadBitmapByString({ "resources/box_m.bmp" });
+=======
+	choose_level.Init();
+>>>>>>> Stashed changes
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -122,8 +126,20 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的
 	}
 
 	//exit
-	if (point.x >= exit_icon.GetLeft() && point.x <= exit_icon.GetLeft() + exit_icon.GetWidth() && point.y >= exit_icon.GetTop() && point.y <= exit_icon.GetTop() + exit_icon.GetHeight()) {
-		// to do
+	if (choose_level.state == false) {
+		if (point.x >= exit_icon.GetLeft() && point.x <= exit_icon.GetLeft() + exit_icon.GetWidth() && point.y >= exit_icon.GetTop() && point.y <= exit_icon.GetTop() + exit_icon.GetHeight()) {
+			choose_level.state = true;
+			transition.ToggleAnimation();
+		}
+	}
+
+	//choose level
+	if (choose_level.state == true) {
+		if (choose_level.press_level_button(point) >= 0 && choose_level.press_level_button(point) <= 17) {
+			level = choose_level.press_level_button(point);
+			choose_level.state = false;
+			transition.ToggleAnimation();
+		}
 	}
 }
 
@@ -145,9 +161,25 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動
 
 void CGameStateRun::OnShow()
 {
+<<<<<<< Updated upstream
 	show_image_by_level();
 	show_text_by_level();
 	show_transition();
+=======
+	if (choose_level.state == true) {
+		choose_level.Show();
+		music_icon.ShowBitmap();
+		sound_icon.ShowBitmap();
+		show_transition();
+	}
+
+	else if (choose_level.state == false) {
+		show_image_by_level();
+		show_text_by_level();
+		test.Show();
+		show_transition();
+	}
+>>>>>>> Stashed changes
 }
 
 void CGameStateRun::show_image_by_level() {
@@ -164,12 +196,18 @@ void CGameStateRun::show_image_by_level() {
 void CGameStateRun::show_text_by_level() {
 
 	CDC *pDC = CDDraw::GetBackCDC();
-	CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 
+<<<<<<< Updated upstream
 	if (level == 1) {
+=======
+	//CTextDraw::Print(pDC, 100, 100, std::to_string(test.width) + " " + std::to_string(test.height));
+	
+	if (level >= 1 && level <= 16) {
+>>>>>>> Stashed changes
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
-		text_border(pDC, 15, 695, 4, "Level 1");
+		text_art.TextBorder(pDC, 15, 695, 4, "Level " + std::to_string(level));
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
+<<<<<<< Updated upstream
 		CTextDraw::Print(pDC, 15, 695, "Level 1");
 	}
 	else if (level == 2) {
@@ -178,6 +216,22 @@ void CGameStateRun::show_text_by_level() {
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 		CTextDraw::Print(pDC, 15, 695, "Level 2");
 	}
+=======
+		CTextDraw::Print(pDC, 15, 695, "Level " + std::to_string(level));
+		CTextDraw::Print(pDC, 100, 100, std::to_string(test.width) + " " + std::to_string(test.height));
+
+		if (level == 1) {
+
+			CPoint ori = test.ReturnOri(level);
+			for (int i = 0; i < test.width; i++) {
+				for (int j = 0; j < test.height; j++) {
+					CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j, std::to_string(i) + ", " + std::to_string(j));
+					CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 20, test.PrintObjectType(i, j));
+				}
+			}
+		}
+	}
+>>>>>>> Stashed changes
 
 	CDDraw::ReleaseBackCDC();
 }
@@ -186,6 +240,7 @@ void CGameStateRun::show_transition() {
 	if (level <= 16) {
 		transition.ShowBitmap();
 	}
+<<<<<<< Updated upstream
 }
 
 void CGameStateRun::text_border(CDC *pDC, int x, int y, int size, string s) {
@@ -199,4 +254,6 @@ void CGameStateRun::text_border(CDC *pDC, int x, int y, int size, string s) {
 		CTextDraw::Print(pDC, x - i, y + i, s);
 		CTextDraw::Print(pDC, x - i, y - i, s);
 	}
+=======
+>>>>>>> Stashed changes
 }
