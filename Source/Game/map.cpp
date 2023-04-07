@@ -2,7 +2,6 @@
 #include "map.h"
 #include <fstream>
 #include <string>
-#include "log.hpp"
 
 
 void Map::Matrix(int level) {
