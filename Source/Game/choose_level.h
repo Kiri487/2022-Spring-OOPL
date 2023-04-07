@@ -8,6 +8,7 @@ public:
 	bool state;
 	void Init();
 	void Show();
+	void LevelText(CDC *pDC);
 	int press_level_button(CPoint point);
 private:
 	CMovingBitmap background;
