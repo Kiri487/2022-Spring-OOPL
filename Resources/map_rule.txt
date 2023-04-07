@@ -1,5 +1,5 @@
 x y # upper left corner of the map
-m n # array size
+n m # array size
 0 InpassibleBlock
 1 PassibleBlock
 2 Character
