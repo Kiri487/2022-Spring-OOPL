@@ -1,0 +1,3 @@
+n m # array size
+0 Other
+1 Goal
