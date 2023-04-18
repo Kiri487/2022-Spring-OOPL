@@ -11,11 +11,12 @@ public:
 	int width, height;
 	void Matrix(int level);
 	void Show();
-	void MoveObject(int level, int x, int y, int move);
+	void MoveObject(int level, int move);
 	CPoint ori;
 	CPoint ReturnOri(int level);
 	ObjectType ReturnObjectType(Object object, int x, int y);
 	string PrintObjectType(int x, int y);
+	CPoint bob;
 };
 
 
