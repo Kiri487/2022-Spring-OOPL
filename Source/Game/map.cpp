@@ -2,7 +2,6 @@
 #include "map.h"
 #include <fstream>
 #include <string>
-#include "log.hpp"
 
 
 void Map::Matrix(int level) {
@@ -32,6 +31,10 @@ void Map::Matrix(int level) {
 			ObjectType objtyp;
 			objtyp = static_cast<ObjectType>(num);
 			data[j][i].LoadObjectImage(objtyp, CPoint(j, i), ori);
+			if (objtyp == Character) {
+				bob.x = j;
+				bob.y = i;
+			}
 		}
 	}
 
@@ -60,42 +63,143 @@ CPoint Map::ReturnOri(int level) {
 }
 
 
-void Map::MoveObject(int level, int x, int y, int move) {
-	CPoint ori = ReturnOri(level);
-	if (data[x][y].ReturnObjectType() == Character) {
-		switch (move) {
-		case 0: // up
-			if (y - 1 >= 0 && data[x][y-1].ReturnObjectType() != ImpassibleBlock) {
-				data[x][y].LoadObjectImage(PassibleBlock, CPoint(x, y), ori);
-				data[x][y - 1].LoadObjectImage(Character, CPoint(x, y - 1), ori);
+void Map::MoveObject(int level, int move) {
+	ori = ReturnOri(level);
+	switch (move) {
+	case 0: // up
+		if (bob.y - 1 >= 0 && data[bob.x][bob.y - 1].ReturnObjectType() != ImpassibleBlock) {
+			// no box
+			if (data[bob.x][bob.y - 1].ReturnObjectType() == PassibleBlock) {
+				Object temp;
+				temp = data[bob.x][bob.y];
+				data[bob.x][bob.y] = data[bob.x][bob.y - 1];
+				data[bob.x][bob.y - 1] = temp;
+				bob.y -= 1;
+
+				data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
 			}
-			break;
-		case 1: // down
-			if (y + 1 <= height && data[x][y + 1].ReturnObjectType() != ImpassibleBlock) {
-				if (data[x][y + 1].ReturnObjectType() == Sbox && data[x][y + 2].ReturnObjectType() != ImpassibleBlock) {
-					data[x][y + 2].LoadObjectImage(Sbox, CPoint(x, y + 2), ori);
-					data[x][y + 1].LoadObjectImage(PassibleBlock, CPoint(x, y + 1), ori);
+
+			// has Sbox
+			else if (data[bob.x][bob.y - 1].ReturnObjectType() == Sbox) {
+				if (bob.y - 2 <= 0 || data[bob.x][bob.y - 2].ReturnObjectType() == ImpassibleBlock) {
+					break;
 				}
-				data[x][y].LoadObjectImage(PassibleBlock, CPoint(x, y), ori);
-				data[x][y + 1].LoadObjectImage(Character, CPoint(x, y + 1), ori);
-					
+				else {
+					Object temp;
+					temp = data[bob.x][bob.y];
+					data[bob.x][bob.y] = data[bob.x][bob.y - 2];
+					data[bob.x][bob.y - 2] = data[bob.x][bob.y - 1];
+					data[bob.x][bob.y - 1] = temp;
+					bob.y -= 1;
+
+					data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+					data[bob.x][bob.y - 1].SetImage(CPoint(bob.x, bob.y - 1), ori);
+				}
 			}
-			break;
-		case 2: // left
-			if (x - 1 >= 0 && data[x - 1][y].ReturnObjectType() != ImpassibleBlock) {
-				data[x][y].LoadObjectImage(PassibleBlock, CPoint(x, y), ori);
-				data[x - 1][y].LoadObjectImage(Character, CPoint(x - 1, y), ori);
-			}
-			break; 
-		case 3: // right
-			if (x + 1 <= width && data[x + 1][y].ReturnObjectType() != ImpassibleBlock) {
-				data[x][y].LoadObjectImage(PassibleBlock, CPoint(x, y), ori);
-				data[x + 1][y].LoadObjectImage(Character, CPoint(x + 1, y), ori);
-			}
-			break;
-		default:
-			break;
 		}
+		break;
+	case 1: // down
+		if (bob.y + 1 < height &&  data[bob.x][bob.y + 1].ReturnObjectType() != ImpassibleBlock) {
+			// no box
+			if (data[bob.x][bob.y + 1].ReturnObjectType() == PassibleBlock) {
+				Object temp;
+				temp = data[bob.x][bob.y];
+				data[bob.x][bob.y] = data[bob.x][bob.y + 1];
+				data[bob.x][bob.y + 1] = temp;
+				bob.y += 1;
+
+				data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+			}
+
+			// has box
+			else if (data[bob.x][bob.y + 1].ReturnObjectType() == Sbox) {
+				//no box
+				if (bob.y + 2 >= height || data[bob.x][bob.y + 2].ReturnObjectType() == ImpassibleBlock) {
+					break;
+				}
+				else {
+					Object temp;
+					temp = data[bob.x][bob.y];
+					data[bob.x][bob.y] = data[bob.x][bob.y + 2];
+					data[bob.x][bob.y + 2] = data[bob.x][bob.y + 1];
+					data[bob.x][bob.y + 1] = temp;
+					bob.y += 1;
+
+					data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+					data[bob.x][bob.y + 1].SetImage(CPoint(bob.x, bob.y + 1), ori);
+				}
+			}
+		}
+		break;
+
+	case 2: // left
+		if (bob.x - 1 >= 0 && data[bob.x - 1][bob.y].ReturnObjectType() != ImpassibleBlock) {
+			// no box
+			if (data[bob.x - 1][bob.y].ReturnObjectType() == PassibleBlock) {
+				Object temp;
+				temp = data[bob.x][bob.y];
+				data[bob.x][bob.y] = data[bob.x - 1][bob.y];
+				data[bob.x - 1][bob.y] = temp;
+				bob.x -= 1;
+
+				data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+			}
+
+			// has box
+			else if (data[bob.x - 1][bob.y].ReturnObjectType() == Sbox) {
+				if (bob.x - 2 <= 0 || data[bob.x - 2][bob.y].ReturnObjectType() == ImpassibleBlock) {
+					break;
+				}
+				else {
+					Object temp;
+					temp = data[bob.x][bob.y];
+					data[bob.x][bob.y] = data[bob.x - 2][bob.y];
+					data[bob.x - 2][bob.y] = data[bob.x - 1][bob.y];
+					data[bob.x - 1][bob.y] = temp;
+					bob.x -= 1;
+
+					data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+					data[bob.x - 1][bob.y].SetImage(CPoint(bob.x - 1, bob.y), ori);
+				}
+			}
+		}
+		break; 
+
+	case 3: // right
+		if (bob.x + 1 <=  width && data[bob.x + 1][bob.y].ReturnObjectType() != ImpassibleBlock) {
+			// no box
+			if (data[bob.x + 1][bob.y].ReturnObjectType() == PassibleBlock) {
+				Object temp;
+				temp = data[bob.x][bob.y];
+				data[bob.x][bob.y] = data[bob.x + 1][bob.y];
+				data[bob.x + 1][bob.y] = temp;
+				bob.x += 1;
+
+				data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+			}
+
+				// has box
+				else if (data[bob.x + 1][bob.y].ReturnObjectType() == Sbox) {
+					if (bob.x + 2 >= width || data[bob.x + 2][bob.y].ReturnObjectType() == ImpassibleBlock) {
+						break;
+					}
+					else {
+						Object temp;
+						temp = data[bob.x][bob.y];
+						data[bob.x][bob.y] = data[bob.x + 2][bob.y];
+						data[bob.x + 2][bob.y] = data[bob.x + 1][bob.y];
+						data[bob.x + 1][bob.y] = temp;
+						bob.x += 1;
+
+						data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+						data[bob.x + 1][bob.y].SetImage(CPoint(bob.x + 1, bob.y), ori);
+					}
+				}
+			}
+
+		break;
+	default:
+		break;
 	}
 }
 
@@ -114,6 +218,10 @@ string Map::PrintObjectType(int x, int y) {
 	case PassibleBlock:
 		type = "1";
 		break;
+	case Character:
+		type = "2";
+		break;
+
 	default:
 		type = "x";
 		break;
@@ -121,4 +229,3 @@ string Map::PrintObjectType(int x, int y) {
 	
 	return type;
 }
-

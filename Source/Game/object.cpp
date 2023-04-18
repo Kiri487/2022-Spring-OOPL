@@ -36,6 +36,18 @@ void Object::LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori) {
 	
 }
 
+
+
 ObjectType Object::ReturnObjectType() {
 	return objecttype;
 }
+
+void Object::SetImage(CPoint now, CPoint ori) {
+	image.SetTopLeft(ori.x + 83 * now.x, ori.y + 83 * now.y);
+}
+
+//Object Object::operator=(const Object &other) {
+//	this->objecttype = other.objecttype;
+//	this->image = other.image;
+//	return *this;
+//}
