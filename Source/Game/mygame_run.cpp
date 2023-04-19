@@ -80,41 +80,29 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// enter
-	if (nChar == VK_RETURN) {
+	if (nChar == VK_RETURN && enter == false) {
 		// !!! change level test !!! 
-		level++; 
+		enter = true;
+		level++;
 		if (level <= 16) {
 			transition.ToggleAnimation();
+			test.Matrix(level);
+			enter = false;
 		}
+
 		// !!! change level test !!! 
 	}
 	else if (nChar == VK_UP) {
-		for (int i = 0; i < test.width; i++) {
-			for (int j = 0; j < test.height; j++) {
-				test.MoveObject(level, i, j, 0);
-			}
-		}
+		test.MoveObject(level, 0);
 	}
 	else if (nChar == VK_DOWN) {
-		for (int i = 0; i < test.width; i++) {
-			for (int j = 0; j < test.height; j++) {
-				test.MoveObject(level, i, j, 1);
-			}
-		}
+		test.MoveObject(level, 1);
 	}
 	else if (nChar == VK_LEFT) {
-		for (int i = 0; i < test.width; i++) {
-			for (int j = 0; j < test.height; j++) {
-				test.MoveObject(level, i, j, 2);
-			}
-		}
+		test.MoveObject(level, 2);
 	}
 	else if (nChar == VK_RIGHT) {
-		for (int i = 0; i < test.width; i++) {
-			for (int j = 0; j < test.height; j++) {
-				test.MoveObject(level, i, j, 3);
-			}
-		}
+		test.MoveObject(level, 3);
 	}
 }
 
@@ -156,6 +144,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的
 	if (choose_level.state == true) {
 		if (choose_level.press_level_button(point) >= 0 && choose_level.press_level_button(point) <= 17) {
 			level = choose_level.press_level_button(point);
+			test.Matrix(level);
 			choose_level.state = false;
 			transition.ToggleAnimation();
 		}
@@ -181,13 +170,18 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動
 void CGameStateRun::OnShow()
 {
 	if (choose_level.state == true) {
+
 		choose_level.Show();
 		music_icon.ShowBitmap();
 		sound_icon.ShowBitmap();
+		CDC *pDC = CDDraw::GetBackCDC();
+		choose_level.LevelText(pDC);
+		CDDraw::ReleaseBackCDC();
 		show_transition();
 	}
 
 	else if (choose_level.state == false) {
+
 		show_image_by_level();
 		show_text_by_level();
 		test.Show();
@@ -219,16 +213,14 @@ void CGameStateRun::show_text_by_level() {
 		CTextDraw::Print(pDC, 15, 695, "Level " + std::to_string(level));
 		CTextDraw::Print(pDC, 100, 100, std::to_string(test.width) + " " + std::to_string(test.height));
 
-		if (level == 1) {
-
-			CPoint ori = test.ReturnOri(level);
-			for (int i = 0; i < test.width; i++) {
-				for (int j = 0; j < test.height; j++) {
-					CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j, std::to_string(i) + ", " + std::to_string(j));
-					CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 20, test.PrintObjectType(i, j));
-				}
+		CPoint ori = test.ReturnOri(level);
+		for (int i = 0; i < test.width; i++) {
+			for (int j = 0; j < test.height; j++) {
+				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j, std::to_string(i) + ", " + std::to_string(j));
+				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 20, test.PrintObjectType(i, j));
 			}
 		}
+		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
 	}
 
 	CDDraw::ReleaseBackCDC();
