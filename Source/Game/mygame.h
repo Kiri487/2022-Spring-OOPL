@@ -94,6 +94,7 @@ namespace game_framework {
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
 		int level = 1;
+		bool enter = false;
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
@@ -109,6 +110,8 @@ namespace game_framework {
 		Map test;
 		ChooseLevel choose_level;
 		TextArt text_art;
+		Object imagedata;
+		std::vector<game_framework::CMovingBitmap> imagedatashow;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
