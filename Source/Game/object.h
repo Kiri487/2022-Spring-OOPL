@@ -23,6 +23,7 @@ public:
 	void LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori);
 	ObjectType ReturnObjectType();
 	void SetImage(CPoint now, CPoint ori);
+	bool setbox;
 
 	//Object operator=(const Object &other);
 
