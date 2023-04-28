@@ -3,7 +3,15 @@
 #include "map.h"
 
 void Object::ShowObjectImage() {
-	if (objecttype != ImpassibleBlock && objecttype != PassibleBlock) {
+	if (objecttype == Mbox) {
+		if(setbox == TRUE)
+			image.ShowBitmap();
+	}
+	else if (objecttype == Lbox) {
+		if (setbox == TRUE)
+			image.ShowBitmap();
+	}
+	else if (objecttype != ImpassibleBlock && objecttype != PassibleBlock) {
 		image.ShowBitmap();
 	}
 }
@@ -30,8 +38,10 @@ void Object::LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori) {
 		default:
 			break;
 	}
-	if (objecttype != ImpassibleBlock && objecttype != PassibleBlock) {
-		image.SetTopLeft(ori.x + 83 * now.x, ori.y + 83 * now.y);
+
+	SetImage(now, ori);
+	if (objecttype == Sbox || objecttype == Mbox || objecttype == Lbox && setbox == TRUE) {
+		image.SetTopLeft(ori.x + 83 * now.x + 6, ori.y + 83 * now.y + 6);
 	}
 	
 }
@@ -43,11 +53,17 @@ ObjectType Object::ReturnObjectType() {
 }
 
 void Object::SetImage(CPoint now, CPoint ori) {
-	image.SetTopLeft(ori.x + 83 * now.x, ori.y + 83 * now.y);
+	if (objecttype == Sbox || objecttype == Mbox || objecttype == Lbox && setbox == TRUE) {
+		image.SetTopLeft(ori.x + 83 * now.x + 6, ori.y + 83 * now.y + 6);
+	}
+	if (objecttype == Hole) {
+		image.SetTopLeft(ori.x + 83 * now.x + 6, ori.y + 83 * now.y + 6);
+	}
+	else if (objecttype == Character) {
+		image.SetTopLeft(ori.x + 83 * now.x + 13, ori.y + 83 * now.y - 31);
+	}
+	else if (objecttype != ImpassibleBlock && objecttype != PassibleBlock) {
+		image.SetTopLeft(ori.x + 83 * now.x, ori.y + 83 * now.y);
+	}
 }
 
-//Object Object::operator=(const Object &other) {
-//	this->objecttype = other.objecttype;
-//	this->image = other.image;
-//	return *this;
-//}

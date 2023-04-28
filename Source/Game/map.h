@@ -6,6 +6,7 @@ class Map {
 private:
 	std::vector<std::vector<Object>> data;
 	int level;
+	void MoveObject(int level, int move_tag, int move);
 
 public:
 	int width, height;
@@ -14,7 +15,7 @@ public:
 	void MoveObject(int level, int move);
 	CPoint ori;
 	CPoint ReturnOri(int level);
-	ObjectType ReturnObjectType(Object object, int x, int y);
+	ObjectType ReturnObjectType(int x, int y);
 	string PrintObjectType(int x, int y);
 	CPoint bob;
 };
