@@ -40,6 +40,7 @@
 
 #include "map.h"
 #include "choose_level.h"
+#include "clear_level.h"
 #include "text_art.h"
 
 namespace game_framework {
@@ -112,6 +113,7 @@ namespace game_framework {
 		TextArt text_art;
 		Object imagedata;
 		std::vector<game_framework::CMovingBitmap> imagedatashow;
+		ClearLevel clear_level;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

@@ -75,34 +75,40 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	exit_icon.SetTopLeft(25, 25);
 
 	choose_level.Init();
+	clear_level.GoalLocation(1);
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// enter
-	if (nChar == VK_RETURN && enter == false) {
-		// !!! change level test !!! 
-		enter = true;
-		level++;
-		if (level <= 16) {
-			transition.ToggleAnimation();
-			test.Matrix(level);
-			enter = false;
-		}
+
+	if (nChar == VK_RETURN) {
 
 		// !!! change level test !!! 
+		if (clear_level.IfClear(level, test)) {
+			level++;
+			if (level <= 16) {
+				transition.ToggleAnimation();
+				clear_level.GoalLocation(level);
+				test.Matrix(level);
+			}
+		}
+		// !!! change level test !!! 
 	}
-	else if (nChar == VK_UP) {
+	else if (nChar == VK_UP || nChar == 0x57) {
 		test.MoveObject(level, 0);
 	}
-	else if (nChar == VK_DOWN) {
+	else if (nChar == VK_DOWN || nChar == 0x53) {
 		test.MoveObject(level, 1);
 	}
-	else if (nChar == VK_LEFT) {
+	else if (nChar == VK_LEFT || nChar == 0x41) {
 		test.MoveObject(level, 2);
 	}
-	else if (nChar == VK_RIGHT) {
+	else if (nChar == VK_RIGHT || nChar == 0x44) {
 		test.MoveObject(level, 3);
+	}
+	else if (nChar == 0x52) {
+		test.Matrix(level);
 	}
 }
 
@@ -145,6 +151,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的
 		if (choose_level.press_level_button(point) >= 0 && choose_level.press_level_button(point) <= 17) {
 			level = choose_level.press_level_button(point);
 			test.Matrix(level);
+			clear_level.GoalLocation(level);
 			choose_level.state = false;
 			transition.ToggleAnimation();
 		}
@@ -220,7 +227,16 @@ void CGameStateRun::show_text_by_level() {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 20, test.PrintObjectType(i, j));
 			}
 		}
+
+		for (int i = 0; i < clear_level.width; i++) {
+			for (int j = 0; j < clear_level.height; j++) {
+				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 40, std::to_string(clear_level.GetValue(i, j)));
+			}
+		}
+		CTextDraw::Print(pDC, 15, 0, std::to_string(clear_level.IfClear(level, test)));
+
 		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
+		
 	}
 
 	CDDraw::ReleaseBackCDC();
