@@ -72,7 +72,7 @@ void ChooseLevel::LevelText(CDC *pDC) {
 
 int ChooseLevel::press_level_button(CPoint point) {
 	
-	for (int i = 0; i <= 17; i++) {
+	for (int i = 1; i <= 16; i++) {
 		if (point.x >= level_button[i].GetLeft() && point.x <= level_button[i].GetLeft() + level_button[i].GetWidth() && point.y >= level_button[i].GetTop() && point.y <= level_button[i].GetTop() + level_button[i].GetHeight()) {
 			return i;
 		}
