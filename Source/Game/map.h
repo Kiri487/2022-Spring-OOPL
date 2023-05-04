@@ -13,6 +13,11 @@ public:
 	void Matrix(int level);
 	void Show();
 	void MoveObject(int level, int move);
+	void movenobox(int level, int move);
+	void moveSbox(int level, int move);
+	int boxtag(CPoint target, ObjectType boxtype);
+	CPoint return_move(int movetag);
+	bool boundary(CPoint target, int movetag);
 	CPoint ori;
 	CPoint ReturnOri(int level);
 	ObjectType ReturnObjectType(int x, int y);
