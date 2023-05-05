@@ -362,6 +362,8 @@ void Map::MoveObject(int level, int move) {
 	default:
 		break;
 	}
+	MapStep.push(GetNowMap());
+	BobStep.push(bob);
 }
 
 
