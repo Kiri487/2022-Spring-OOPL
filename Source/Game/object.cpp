@@ -56,7 +56,7 @@ void Object::SetImage(CPoint now, CPoint ori) {
 	if (objecttype == Sbox || objecttype == Mbox || objecttype == Lbox && setbox == TRUE) {
 		image.SetTopLeft(ori.x + 83 * now.x + 6, ori.y + 83 * now.y + 6);
 	}
-	if (objecttype == Hole) {
+	else if (objecttype == Hole) {
 		image.SetTopLeft(ori.x + 83 * now.x + 6, ori.y + 83 * now.y + 6);
 	}
 	else if (objecttype == Character) {
@@ -67,3 +67,7 @@ void Object::SetImage(CPoint now, CPoint ori) {
 	}
 }
 
+
+void Object::changeObjecttype(ObjectType change_objecttype) {
+	objecttype = change_objecttype;
+}
