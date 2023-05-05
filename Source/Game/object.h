@@ -24,6 +24,7 @@ public:
 	ObjectType ReturnObjectType();
 	void SetImage(CPoint now, CPoint ori);
 	bool setbox;
+	void changeObjecttype(ObjectType change_objecttype);
 
 	//Object operator=(const Object &other);
 

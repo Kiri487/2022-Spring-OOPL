@@ -62,9 +62,10 @@ void Map::Matrix(int level) {
 		}
 	}
 
-	
-
 	ifs.close();
+
+	MapStep.push(GetNowMap());
+	BobStep.push(bob);
 }
 
 void Map::Show() {
@@ -149,8 +150,16 @@ void Map::movenobox(int level, int movetag) {
 	data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
 }
 
-void Map::moveSbox(int level, int movetag) {
-	CPoint move = return_move(movetag);
+void Map::moveSbox(int level, int movetype) {
+
+	CPoint move = return_move(movetype);
+
+	if (data[bob.x + 2 * move.x][bob.y + 2 * move.y].ReturnObjectType() == Hole) {
+		data[bob.x + 2 * move.x][bob.y + 2 * move.y].changeObjecttype(PassibleBlock);
+		data[bob.x + move.x][bob.y + move.y].changeObjecttype(PassibleBlock);
+	}
+		
+
 	ori = ReturnOri(level);
 	Object temp;
 	temp = data[bob.x][bob.y];
@@ -165,18 +174,68 @@ void Map::moveSbox(int level, int movetag) {
 	
 }
 
+void Map::moveMbox(int level, int movetype, int mboxtag) {
+	CPoint move = return_move(movetype);
+	ori = ReturnOri(level);
+	Object temp;
+	if (movetype == 0 || movetype == 1) {
+		temp = data[mboxtag][bob.y + 2 * move.y];
+		data[mboxtag][bob.y + 2 * move.y] = data[mboxtag][bob.y + move.y];
+		data[mboxtag][bob.y + move.y] = temp;
+
+		temp = data[mboxtag + 1][bob.y + 2 * move.y];
+		data[mboxtag + 1][bob.y + 2 * move.y] = data[mboxtag + 1][bob.y + move.y];
+		data[mboxtag + 1][bob.y + move.y] = temp;
+
+		temp = data[bob.x][bob.y + move.y];
+		data[bob.x][bob.y + move.y] = data[bob.x][bob.y];
+		data[bob.x][bob.y] = temp;
+		
+		bob.x += move.x;
+		bob.y += move.y;
+		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+		data[bob.x + move.x][bob.y + move.y].SetImage(CPoint(bob.x + move.x, bob.y + move.y), ori);
+		data[mboxtag][bob.y].SetImage(CPoint(mboxtag, bob.y), ori);
+		data[mboxtag + move.x][bob.y + move.y].SetImage(CPoint(mboxtag + move.x, bob.y + move.y), ori);
+	}
+	else {
+		temp = data[bob.x + 3 * move.x][bob.y];
+		data[bob.x + 3 * move.x][bob.y] = data[bob.x + 2 * move.x][bob.y];
+		data[bob.x + 2 * move.x][bob.y] = temp;
+
+		temp = data[bob.x + 2 * move.x][bob.y];
+		data[bob.x + 2 * move.x][bob.y] = data[bob.x + move.x][bob.y];
+		data[bob.x + move.x][bob.y] = temp;
+
+		temp = data[bob.x + move.x][bob.y];
+		data[bob.x + move.x][bob.y] = data[bob.x][bob.y];
+		data[bob.x][bob.y] = temp;
+
+		bob.x += move.x;
+		bob.y += move.y;
+		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+		data[bob.x + move.x][bob.y].SetImage(CPoint(bob.x + move.x, bob.y), ori);
+		data[bob.x - move.x][bob.y].SetImage(CPoint(bob.x - move.x, bob.y), ori);
+		data[bob.x + 2 * move.x][bob.y].SetImage(CPoint(bob.x + 2 * move.x, bob.y), ori);
+	}
+	
+}
+
 int Map::boxtag(CPoint target, ObjectType boxtype) {
 	int boxtag = target.x;
-	switch (boxtype) {
+	switch (boxtype)
+	{
 	case Mbox:
 		if (data[target.x - 1][target.y].ReturnObjectType() == Mbox)
 			boxtag = target.x - 1; // character on box right
 		else
 			boxtag = target.x; // character on box left
+	default:
+		break;
 	}
-
-	return boxtag;
 	
+	
+	return boxtag;
 }
 
 
@@ -202,31 +261,12 @@ void Map::MoveObject(int level, int move) {
 
 			// has Mbox
 			else if (data[bob.x][bob.y - 1].ReturnObjectType() == Mbox) {
-				int mboxtag = bob.x;
-				if (data[bob.x][bob.y - 1].ReturnObjectType() == Mbox)
-					mboxtag = bob.x - 1; // character on box right
-				else
-					mboxtag = bob.x + 1; // character on box left
+				int mboxtag = boxtag(CPoint(bob.x, bob.y - 1), Mbox);
 				if (bob.y - 2 < 0 || data[bob.x][bob.y - 2].ReturnObjectType() == ImpassibleBlock || data[mboxtag][bob.y - 2].ReturnObjectType() == ImpassibleBlock) {
 					break;
 				}
 				else {
-					Object temp;
-					temp = data[bob.x][bob.y];
-					data[bob.x][bob.y] = data[bob.x][bob.y - 2];
-					data[bob.x][bob.y - 2] = data[bob.x][bob.y - 1];
-					data[bob.x][bob.y - 1] = temp;
-
-					temp = data[mboxtag][bob.y];
-					data[mboxtag][bob.y] = data[mboxtag][bob.y - 2];
-					data[mboxtag][bob.y - 2] = data[mboxtag][bob.y - 1];
-					data[mboxtag][bob.y - 1] = temp;
-					bob.y -= 1;
-
-					data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-					data[bob.x][bob.y - 1].SetImage(CPoint(bob.x, bob.y - 1), ori);
-					data[mboxtag][bob.y].SetImage(CPoint(mboxtag, bob.y), ori);
-					data[mboxtag][bob.y - 1].SetImage(CPoint(mboxtag, bob.y - 1), ori);
+					moveMbox(level, move, mboxtag);
 				}
 			}
 		}
@@ -248,30 +288,12 @@ void Map::MoveObject(int level, int move) {
 				}
 			}
 			else if (data[bob.x][bob.y + 1].ReturnObjectType() == Mbox) {
-				int mboxtag = bob.x;
-				if (data[bob.x - 1][bob.y + 1].ReturnObjectType() == Mbox)
-					mboxtag = bob.x - 1; // character on box right
-				else
-					mboxtag = bob.x + 1; // character on box left
+				int mboxtag = boxtag(CPoint(bob.x, bob.y + 1), Mbox);
 				if (bob.y + 2 >= height || data[bob.x][bob.y + 2].ReturnObjectType() == ImpassibleBlock || data[mboxtag][bob.y + 2].ReturnObjectType() == ImpassibleBlock) {
 					break;
 				}
 				else {
-					Object temp;
-					temp = data[bob.x][bob.y];
-					data[bob.x][bob.y] = data[bob.x][bob.y + 2];
-					data[bob.x][bob.y + 2] = data[bob.x][bob.y + 1];
-					data[bob.x][bob.y + 1] = temp;
-					temp = data[mboxtag][bob.y];
-					data[mboxtag][bob.y] = data[mboxtag][bob.y + 2];
-					data[mboxtag][bob.y + 2] = data[mboxtag][bob.y + 1];
-					data[mboxtag][bob.y + 1] = temp;
-					bob.y += 1;
-
-					data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-					data[bob.x][bob.y + 1].SetImage(CPoint(bob.x, bob.y + 1), ori);
-					data[mboxtag][bob.y].SetImage(CPoint(mboxtag, bob.y), ori);
-					data[mboxtag][bob.y + 1].SetImage(CPoint(mboxtag, bob.y + 1), ori);
+					moveMbox(level, move, mboxtag);
 				}
 			}
 		}
@@ -290,8 +312,18 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					Object temp;
 					moveSbox(level, move);
+				}
+			}
+
+			// has Mbox
+			else if (data[bob.x - 1][bob.y].ReturnObjectType() == Mbox) {
+				int mboxtag = 0;
+				if (bob.x - 3 < 0 || data[bob.x - 3][bob.y].ReturnObjectType() == ImpassibleBlock ) {
+					break;
+				}
+				else {
+					moveMbox(level, move, mboxtag);
 				}
 			}
 		}
@@ -311,6 +343,17 @@ void Map::MoveObject(int level, int move) {
 				}
 				else {
 					moveSbox(level, move);
+				}
+			}
+
+			// has Mbox
+			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Mbox) {
+				int mboxtag = 0;
+				if (bob.x + 3 >= width || data[bob.x + 3][bob.y].ReturnObjectType() == ImpassibleBlock) {
+					break;
+				}
+				else {
+					moveMbox(level, move, mboxtag);
 				}
 			}
 		}
@@ -346,4 +389,25 @@ string Map::PrintObjectType(int x, int y) {
 	}
 	
 	return type;
+}
+
+std::vector<std::vector<Object>> Map::GetNowMap() {
+
+	std::vector<std::vector<Object>> now_map;
+
+	now_map.clear();
+	now_map.resize(width, std::vector<Object>(height));
+
+	now_map = data;
+
+	return now_map;
+}
+
+void Map::Undo() {
+	if (MapStep.size() != 1) {
+		MapStep.pop();
+		data = MapStep.top();
+		BobStep.pop();
+		bob = BobStep.top();
+	}
 }
