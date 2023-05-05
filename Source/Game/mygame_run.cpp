@@ -108,7 +108,14 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		test.MoveObject(level, 3);
 	}
 	else if (nChar == 0x52) {
+		while (!test.MapStep.empty()) {
+			test.MapStep.pop();
+			test.BobStep.pop();
+		}
 		test.Matrix(level);
+	}
+	else if (nChar == 0x55) {
+		test.Undo();
 	}
 }
 
