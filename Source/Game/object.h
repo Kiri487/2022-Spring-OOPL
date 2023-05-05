@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Library/gameutil.h"
+#include<vector>
 
 enum ObjectType {
 	ImpassibleBlock,
@@ -14,10 +15,17 @@ enum ObjectType {
 
 class Object {
 private:
-	ObjectType objecttype;
+	ObjectType objecttype; 
 	game_framework::CMovingBitmap image;
+	
 public:
 	void ShowObjectImage();
 	void LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori);
 	ObjectType ReturnObjectType();
+	void SetImage(CPoint now, CPoint ori);
+	bool setbox;
+	void changeObjecttype(ObjectType change_objecttype);
+
+	//Object operator=(const Object &other);
+
 };
