@@ -3,7 +3,6 @@
 # include "Object.h"
 # include <fstream>
 # include <string>
-
 CPoint Move::bobmove(CPoint bob, int movetag) {
 	CPoint move = return_move(movetag);
 	
@@ -134,4 +133,55 @@ CPoint Move::ReturnOri(int level) {
 	ifs.close();
 
 	return ori;
+}
+
+bool Move::moviable(std::vector<std::vector<Object>> data, CPoint now, int movetype, int height, int width) {
+	CPoint move = return_move(movetype);
+	switch (movetype) {
+	case 0:
+		if (now.y - 1 < 0 || data[now.x][now.y - 1].ReturnObjectType() == ImpassibleBlock) {
+			return FALSE;
+		}
+		else if (now.y - 1 >= 0 && (data[now.x][now.y - 1].ReturnObjectType() == PassibleBlock || data[now.x][now.y - 1].ReturnObjectType() == Hole)) {
+			return TRUE;
+		}
+		else {
+			return  Move::moviable(data, CPoint(now.x, now.y - 1), movetype, height, width);
+		}
+		break;
+	case 1:
+		if (now.y + 1 >= height || data[now.x][now.y + 1].ReturnObjectType() == ImpassibleBlock) {
+			return FALSE;
+		}
+		else if (now.y + 1 < height && (data[now.x][now.y + 1].ReturnObjectType() == PassibleBlock || data[now.x][now.y - 1].ReturnObjectType() == Hole)) {
+			return TRUE;
+		}
+		else {
+			return  Move::moviable(data, CPoint(now.x, now.y + 1), movetype, height, width);
+		}
+		break;
+	case 2:
+		if (now.x - 1 < 0 || data[now.x - 1][now.y].ReturnObjectType() == ImpassibleBlock) {
+			return FALSE;
+		}
+		else if (now.x - 1 >= 0 && (data[now.x - 1][now.y].ReturnObjectType() == PassibleBlock || data[now.x - 1][now.y].ReturnObjectType() == Hole)) {
+			return TRUE;
+		}
+		else {
+			return  Move::moviable(data, CPoint(now.x - 1, now.y), movetype, height, width);
+		}
+		break;
+	case 3:
+		if (now.x + 1 >= width || data[now.x + 1][now.y].ReturnObjectType() == ImpassibleBlock) {
+			return FALSE;
+		}
+		else if (now.x + 1 < width && (data[now.x + 1][now.y].ReturnObjectType() == PassibleBlock || data[now.x + 1][now.y].ReturnObjectType() == Hole)) {
+			return TRUE;
+		}
+		else {
+			return  Move::moviable(data, CPoint(now.x + 1, now.y ), movetype, height, width);
+		}
+	default:
+		break;
+	}
 }
