@@ -123,134 +123,70 @@ int Map::boxtag(CPoint target, ObjectType boxtype) {
 void Map::MoveObject(int level, int move) {
 	switch (move) {
 	case 0: // up
-		if (bob.y - 1 >= 0 && data[bob.x][bob.y - 1].ReturnObjectType() != ImpassibleBlock) {
-			// no box
+		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x][bob.y - 1].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
-				bob = movestep.bobmove(bob, move);
 			}
-				
-
-			// has Sbox
 			else if (data[bob.x][bob.y - 1].ReturnObjectType() == Sbox) {
-				if (bob.y - 2 < 0 || data[bob.x][bob.y - 2].ReturnObjectType() == ImpassibleBlock) {
-					break;
-				}
-				else {
-					data = movestep.moveSbox(data, level, move, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				data = movestep.moveSbox(data, level, move, bob);
 			}
-
-			// has Mbox
 			else if (data[bob.x][bob.y - 1].ReturnObjectType() == Mbox) {
 				int mboxtag = boxtag(CPoint(bob.x, bob.y - 1), Mbox);
-				if (bob.y - 2 < 0 || data[bob.x][bob.y - 2].ReturnObjectType() == ImpassibleBlock || data[mboxtag][bob.y - 2].ReturnObjectType() == ImpassibleBlock) {
-					break;
-				}
-				else {
-					data = movestep.moveMbox(data, level, move, mboxtag, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				data = movestep.moveMbox(data, level, move, mboxtag, bob);
 			}
+			bob = movestep.bobmove(bob, move);
 		}
+		
 		break;
 	case 1: // down
-		if (bob.y + 1 < height &&  data[bob.x][bob.y + 1].ReturnObjectType() != ImpassibleBlock) {
-			// no box
+		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x][bob.y + 1].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
-				bob = movestep.bobmove(bob, move);
 			}
-
-			// has box
 			else if (data[bob.x][bob.y + 1].ReturnObjectType() == Sbox) {
-				if (bob.y + 2 >= height || data[bob.x][bob.y + 2].ReturnObjectType() == ImpassibleBlock) {
-					break;
-				}
-				else {
-					data = movestep.moveSbox(data, level, move, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				data = movestep.moveSbox(data, level, move, bob);
 			}
 			else if (data[bob.x][bob.y + 1].ReturnObjectType() == Mbox) {
 				int mboxtag = boxtag(CPoint(bob.x, bob.y + 1), Mbox);
-				if (bob.y + 2 >= height || data[bob.x][bob.y + 2].ReturnObjectType() == ImpassibleBlock || data[mboxtag][bob.y + 2].ReturnObjectType() == ImpassibleBlock) {
-					break;
-				}
-				else {
-					data = movestep.moveMbox(data, level, move, mboxtag, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				data = movestep.moveMbox(data, level, move, mboxtag, bob);
 			}
+			bob = movestep.bobmove(bob, move);
 		}
+		
 		break;
 
 	case 2: // left
-		if (bob.x - 1 >= 0 && data[bob.x - 1][bob.y].ReturnObjectType() != ImpassibleBlock) {
-			// no box
+		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x - 1][bob.y].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
-				bob = movestep.bobmove(bob, move);
 			}
-
-			// has Sbox
 			else if (data[bob.x - 1][bob.y].ReturnObjectType() == Sbox) {
-				if (bob.x - 2 < 0 || data[bob.x - 2][bob.y].ReturnObjectType() == ImpassibleBlock) {
-					break;
-				}
-				else {
-					data = movestep.moveSbox(data, level, move, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				data = movestep.moveSbox(data, level, move, bob);
 			}
-
-			// has Mbox
 			else if (data[bob.x - 1][bob.y].ReturnObjectType() == Mbox) {
-				int mboxtag = 0;
-				if (bob.x - 3 < 0 || data[bob.x - 3][bob.y].ReturnObjectType() == ImpassibleBlock ) {
-					break;
-				}
-				else {
-					data = movestep.moveMbox(data, level, move, mboxtag, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				int mboxtag = boxtag(CPoint(bob.x - 1, bob.y), Mbox);
+				data = movestep.moveMbox(data, level, move, mboxtag, bob);
 			}
+			bob = movestep.bobmove(bob, move);
 		}
+		
 		break; 
 
 	case 3: // right
-		if (bob.x + 1 <=  width && data[bob.x + 1][bob.y].ReturnObjectType() != ImpassibleBlock) {
-			// no box
+		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x + 1][bob.y].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
-				bob = movestep.bobmove(bob, move);
 			}
-
-			// has Sbox
 			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Sbox) {
-				if (bob.x + 2 >= width || data[bob.x + 2][bob.y].ReturnObjectType() == ImpassibleBlock) {
-					break;
-				}
-				else {
-					data = movestep.moveSbox(data, level, move, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				data = movestep.moveSbox(data, level, move, bob);
 			}
-
-			// has Mbox
 			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Mbox) {
-				int mboxtag = 0;
-				if (bob.x + 3 >= width || data[bob.x + 3][bob.y].ReturnObjectType() == ImpassibleBlock) {
-					break;
-				}
-				else {
-					data = movestep.moveMbox(data, level, move, mboxtag, bob);
-					bob = movestep.bobmove(bob, move);
-				}
+				int mboxtag = boxtag(CPoint(bob.x + 1, bob.y), Mbox);
+				data = movestep.moveMbox(data, level, move, mboxtag, bob);
 			}
+			bob = movestep.bobmove(bob, move);
 		}
-
+		
 		break;
 	default:
 		break;
