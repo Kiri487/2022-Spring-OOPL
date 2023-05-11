@@ -178,6 +178,12 @@ void Map::MoveObject(int level, int move) {
 				data = movestep.movenobox(data, level, move, bob);
 			}
 			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Sbox) {
+				if (data[bob.x + 2][bob.y].ReturnObjectType() == Sbox) {
+					if (data[bob.x + 3][bob.y].ReturnObjectType() == Sbox) {
+						data = movestep.moveSbox(data, level, move, CPoint(bob.x + 2, bob.y));
+					}
+					data = movestep.moveSbox(data, level, move, CPoint(bob.x + 1, bob.y));
+				}
 				data = movestep.moveSbox(data, level, move, bob);
 			}
 			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Mbox) {
@@ -244,5 +250,12 @@ void Map::Undo() {
 		data = MapStep.top();
 		BobStep.pop();
 		bob = BobStep.top();
+	}
+}
+
+void Map::MapStepClear() {
+	while (!MapStep.empty()) {
+		MapStep.pop();
+		BobStep.pop();
 	}
 }
