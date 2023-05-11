@@ -8,7 +8,7 @@ ClearLevel::ClearLevel() {
 }
 
 void ClearLevel::GoalLocation(int level) {
-	std::string filename = "Resources/goal" + std::to_string(level) + ".txt";
+	std::string filename = "Resources/other_object" + std::to_string(level) + ".txt";
 	std::ifstream ifs(filename);
 
 	CPoint mapsize;
