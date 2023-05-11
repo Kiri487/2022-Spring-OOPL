@@ -126,15 +126,18 @@ void Map::MoveObject(int level, int move) {
 		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x][bob.y - 1].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x][bob.y - 1].ReturnObjectType() == Sbox) {
 				data = movestep.moveSbox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x][bob.y - 1].ReturnObjectType() == Mbox) {
 				int mboxtag = boxtag(CPoint(bob.x, bob.y - 1), Mbox);
 				data = movestep.moveMbox(data, level, move, mboxtag, bob);
+				bob = movestep.bobmove(bob, move);
 			}
-			bob = movestep.bobmove(bob, move);
+			
 		}
 		
 		break;
@@ -142,15 +145,17 @@ void Map::MoveObject(int level, int move) {
 		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x][bob.y + 1].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x][bob.y + 1].ReturnObjectType() == Sbox) {
 				data = movestep.moveSbox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x][bob.y + 1].ReturnObjectType() == Mbox) {
 				int mboxtag = boxtag(CPoint(bob.x, bob.y + 1), Mbox);
 				data = movestep.moveMbox(data, level, move, mboxtag, bob);
+				bob = movestep.bobmove(bob, move);
 			}
-			bob = movestep.bobmove(bob, move);
 		}
 		
 		break;
@@ -159,15 +164,17 @@ void Map::MoveObject(int level, int move) {
 		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x - 1][bob.y].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x - 1][bob.y].ReturnObjectType() == Sbox) {
 				data = movestep.moveSbox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x - 1][bob.y].ReturnObjectType() == Mbox) {
 				int mboxtag = boxtag(CPoint(bob.x - 1, bob.y), Mbox);
 				data = movestep.moveMbox(data, level, move, mboxtag, bob);
+				bob = movestep.bobmove(bob, move);
 			}
-			bob = movestep.bobmove(bob, move);
 		}
 		
 		break; 
@@ -176,21 +183,17 @@ void Map::MoveObject(int level, int move) {
 		if (movestep.moviable(data, bob, move, height, width)) {
 			if (data[bob.x + 1][bob.y].ReturnObjectType() == PassibleBlock) {
 				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Sbox) {
-				if (data[bob.x + 2][bob.y].ReturnObjectType() == Sbox) {
-					if (data[bob.x + 3][bob.y].ReturnObjectType() == Sbox) {
-						data = movestep.moveSbox(data, level, move, CPoint(bob.x + 2, bob.y));
-					}
-					data = movestep.moveSbox(data, level, move, CPoint(bob.x + 1, bob.y));
-				}
 				data = movestep.moveSbox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Mbox) {
 				int mboxtag = boxtag(CPoint(bob.x + 1, bob.y), Mbox);
 				data = movestep.moveMbox(data, level, move, mboxtag, bob);
-			}
-			bob = movestep.bobmove(bob, move);
+				bob = movestep.bobmove(bob, move);
+			}	
 		}
 		
 		break;
@@ -201,10 +204,6 @@ void Map::MoveObject(int level, int move) {
 	BobStep.push(bob);
 }
 
-
-//CPoint Map::ReturnOri(int level) {
-//	return CPoint(0, 0);
-//}
 
 ObjectType Map::ReturnObjectType(int x, int y) {
 	return data[x][y].ReturnObjectType();

@@ -17,18 +17,18 @@ std::vector<std::vector<Object>> Move::movenobox(std::vector<std::vector<Object>
 
 	ori = ReturnOri(level);
 
-	if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() != PassibleBlock)
-		return data;
+	if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == PassibleBlock) {
+		Object temp;
+		temp = data[bob.x][bob.y];
+		data[bob.x][bob.y] = data[bob.x + move.x][bob.y + move.y];
+		data[bob.x + move.x][bob.y + move.y] = temp;
+		bob.x += move.x;
+		bob.y += move.y;
 
-	Object temp;
-	temp = data[bob.x][bob.y];
-	data[bob.x][bob.y] = data[bob.x + move.x][bob.y + move.y];
-	data[bob.x + move.x][bob.y + move.y] = temp;
-	bob.x += move.x;
-	bob.y += move.y;
+		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
 
-	data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-
+	}
+	
 	return data;
 }
 
