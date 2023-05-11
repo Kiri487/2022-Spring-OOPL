@@ -41,17 +41,27 @@ std::vector<std::vector<Object>> Move::moveSbox(std::vector<std::vector<Object>>
 		data[bob.x + move.x][bob.y + move.y].changeObjecttype(PassibleBlock);
 	}
 
+	int box_sum = 0;
+	for (int i = 1; i < 10; i++) {
+		if (data[bob.x + i * move.x][bob.y + i * move.y].ReturnObjectType() == Sbox) {
+			box_sum += 1;
+		}
+		else {
+			break;
+		}
+	}
 	ori = ReturnOri(level);
 	Object temp;
-	temp = data[bob.x][bob.y];
-	data[bob.x][bob.y] = data[bob.x + 2 * move.x][bob.y + 2 * move.y];
-	data[bob.x + 2 * move.x][bob.y + 2 * move.y] = data[bob.x + move.x][bob.y + move.y];
-	data[bob.x + move.x][bob.y + move.y] = temp;
+	temp = data[bob.x + (box_sum + 1) * move.x][bob.y + (box_sum + 1) * move.y];
+	data[bob.x + (box_sum + 1) * move.x][bob.y + (box_sum + 1) * move.y] = data[bob.x +  move.x][bob.y +  move.y];
+	data[bob.x + move.x][bob.y + move.y] = data[bob.x][bob.y];
+	data[bob.x][bob.y] = temp;
 	bob.x += move.x;
 	bob.y += move.y;
 
 	data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
 	data[bob.x + move.x][bob.y + move.y].SetImage(CPoint(bob.x + move.x, bob.y + move.y), ori);
+	data[bob.x + box_sum * move.x][bob.y + box_sum * move.y].SetImage(CPoint(bob.x + box_sum * move.x, bob.y + box_sum * move.y), ori);
 	
 	return data;
 }
