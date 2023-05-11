@@ -24,7 +24,7 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
-	test.Matrix(level);
+	map.Matrix(level);
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -85,37 +85,35 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_RETURN) {
 
 		// !!! change level test !!! 
-		if (clear_level.IfClear(level, test)) {
+		if (clear_level.IfClear(level, map)) {
 			level++;
 			if (level <= 16) {
 				transition.ToggleAnimation();
 				clear_level.GoalLocation(level);
-				test.Matrix(level);
+				map.MapStepClear();
+				map.Matrix(level);
 			}
 		}
 		// !!! change level test !!! 
 	}
 	else if (nChar == VK_UP || nChar == 0x57) {
-		test.MoveObject(level, 0);
+		map.MoveObject(level, 0);
 	}
 	else if (nChar == VK_DOWN || nChar == 0x53) {
-		test.MoveObject(level, 1);
+		map.MoveObject(level, 1);
 	}
 	else if (nChar == VK_LEFT || nChar == 0x41) {
-		test.MoveObject(level, 2);
+		map.MoveObject(level, 2);
 	}
 	else if (nChar == VK_RIGHT || nChar == 0x44) {
-		test.MoveObject(level, 3);
+		map.MoveObject(level, 3);
 	}
 	else if (nChar == 0x52) {
-		while (!test.MapStep.empty()) {
-			test.MapStep.pop();
-			test.BobStep.pop();
-		}
-		test.Matrix(level);
+		map.MapStepClear();
+		map.Matrix(level);
 	}
 	else if (nChar == 0x55) {
-		test.Undo();
+		map.Undo();
 	}
 }
 
@@ -157,7 +155,8 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的
 	if (choose_level.state == true) {
 		if (choose_level.press_level_button(point) >= 0 && choose_level.press_level_button(point) <= 17) {
 			level = choose_level.press_level_button(point);
-			test.Matrix(level);
+			map.MapStepClear();
+			map.Matrix(level);
 			clear_level.GoalLocation(level);
 			choose_level.state = false;
 			transition.ToggleAnimation();
@@ -198,7 +197,7 @@ void CGameStateRun::OnShow()
 
 		show_image_by_level();
 		show_text_by_level();
-		test.Show();
+		map.Show();
 		show_transition();
 	}
 }
@@ -225,13 +224,13 @@ void CGameStateRun::show_text_by_level() {
 		text_art.TextBorder(pDC, 15, 695, 4, "Level " + std::to_string(level));
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 		CTextDraw::Print(pDC, 15, 695, "Level " + std::to_string(level));
-		CTextDraw::Print(pDC, 100, 100, std::to_string(test.width) + " " + std::to_string(test.height));
+		CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
 
-		CPoint ori = test.ReturnOri(level);
-		for (int i = 0; i < test.width; i++) {
-			for (int j = 0; j < test.height; j++) {
+		CPoint ori = moveori.ReturnOri(level);
+		for (int i = 0; i < map.width; i++) {
+			for (int j = 0; j < map.height; j++) {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j, std::to_string(i) + ", " + std::to_string(j));
-				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 20, test.PrintObjectType(i, j));
+				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 20, map.PrintObjectType(i, j));
 			}
 		}
 
@@ -240,7 +239,7 @@ void CGameStateRun::show_text_by_level() {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 40, std::to_string(clear_level.GetValue(i, j)));
 			}
 		}
-		CTextDraw::Print(pDC, 15, 0, std::to_string(clear_level.IfClear(level, test)));
+		CTextDraw::Print(pDC, 15, 0, std::to_string(clear_level.IfClear(level, map)));
 
 		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
 		

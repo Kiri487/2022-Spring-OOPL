@@ -42,6 +42,7 @@
 #include "choose_level.h"
 #include "clear_level.h"
 #include "text_art.h"
+#include "move.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -108,7 +109,8 @@ namespace game_framework {
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
 		CMovingBitmap exit_icon;
-		Map test;
+		Map map;
+		Move moveori;
 		ChooseLevel choose_level;
 		TextArt text_art;
 		Object imagedata;
