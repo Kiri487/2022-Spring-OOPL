@@ -77,18 +77,6 @@ void Map::Show() {
 }
 
 
-
-CPoint Map::ReturnOri(int level) {
-	std::string filename = "Resources/map" + std::to_string(level) + ".txt";
-	std::ifstream ifs(filename);
-
-	CPoint ori;
-	ifs >> ori.x;
-	ifs >> ori.y;
-
-	return ori;
-}
-
 bool Map::boundary(CPoint target, int movetag) {
 	bool tag = true;
 	switch(movetag){
@@ -112,114 +100,6 @@ bool Map::boundary(CPoint target, int movetag) {
 	return tag;
 }
 
-CPoint Map::return_move(int movetag) {
-	CPoint move = (0, 0);
-	ori = ReturnOri(level);
-	switch (movetag) {
-	case 0:	// up
-		move.y = -1;
-		break;
-	case 1:	// down
-		move.y = 1;
-		break;
-	case 2:	// left
-		move.x = -1;
-		break;
-	case 3:	// right
-		move.x = 1;
-		break;
-	}
-	return move;
-}
-
-void Map::movenobox(int level, int movetag) {
-	CPoint move = return_move(movetag);
-
-	ori = ReturnOri(level);
-
-	if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() != PassibleBlock)
-		return;
-
-	Object temp;
-	temp = data[bob.x][bob.y];
-	data[bob.x][bob.y] = data[bob.x + move.x][bob.y + move.y];
-	data[bob.x + move.x][bob.y + move.y] = temp;
-	bob.x += move.x;
-	bob.y += move.y;
-
-	data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-}
-
-void Map::moveSbox(int level, int movetype) {
-
-	CPoint move = return_move(movetype);
-
-	if (data[bob.x + 2 * move.x][bob.y + 2 * move.y].ReturnObjectType() == Hole) {
-		data[bob.x + 2 * move.x][bob.y + 2 * move.y].changeObjecttype(PassibleBlock);
-		data[bob.x + move.x][bob.y + move.y].changeObjecttype(PassibleBlock);
-	}
-		
-
-	ori = ReturnOri(level);
-	Object temp;
-	temp = data[bob.x][bob.y];
-	data[bob.x][bob.y] = data[bob.x + 2*move.x][bob.y + 2*move.y];
-	data[bob.x + 2*move.x][bob.y + 2*move.y] = data[bob.x + move.x][bob.y + move.y];
-	data[bob.x + move.x][bob.y + move.y] = temp;
-	bob.x += move.x;
-	bob.y += move.y;
-
-	data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-	data[bob.x + move.x][bob.y + move.y].SetImage(CPoint(bob.x + move.x, bob.y + move.y), ori);
-	
-}
-
-void Map::moveMbox(int level, int movetype, int mboxtag) {
-	CPoint move = return_move(movetype);
-	ori = ReturnOri(level);
-	Object temp;
-	if (movetype == 0 || movetype == 1) {
-		temp = data[mboxtag][bob.y + 2 * move.y];
-		data[mboxtag][bob.y + 2 * move.y] = data[mboxtag][bob.y + move.y];
-		data[mboxtag][bob.y + move.y] = temp;
-
-		temp = data[mboxtag + 1][bob.y + 2 * move.y];
-		data[mboxtag + 1][bob.y + 2 * move.y] = data[mboxtag + 1][bob.y + move.y];
-		data[mboxtag + 1][bob.y + move.y] = temp;
-
-		temp = data[bob.x][bob.y + move.y];
-		data[bob.x][bob.y + move.y] = data[bob.x][bob.y];
-		data[bob.x][bob.y] = temp;
-		
-		bob.x += move.x;
-		bob.y += move.y;
-		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-		data[bob.x + move.x][bob.y + move.y].SetImage(CPoint(bob.x + move.x, bob.y + move.y), ori);
-		data[mboxtag][bob.y].SetImage(CPoint(mboxtag, bob.y), ori);
-		data[mboxtag + move.x][bob.y + move.y].SetImage(CPoint(mboxtag + move.x, bob.y + move.y), ori);
-	}
-	else {
-		temp = data[bob.x + 3 * move.x][bob.y];
-		data[bob.x + 3 * move.x][bob.y] = data[bob.x + 2 * move.x][bob.y];
-		data[bob.x + 2 * move.x][bob.y] = temp;
-
-		temp = data[bob.x + 2 * move.x][bob.y];
-		data[bob.x + 2 * move.x][bob.y] = data[bob.x + move.x][bob.y];
-		data[bob.x + move.x][bob.y] = temp;
-
-		temp = data[bob.x + move.x][bob.y];
-		data[bob.x + move.x][bob.y] = data[bob.x][bob.y];
-		data[bob.x][bob.y] = temp;
-
-		bob.x += move.x;
-		bob.y += move.y;
-		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-		data[bob.x + move.x][bob.y].SetImage(CPoint(bob.x + move.x, bob.y), ori);
-		data[bob.x - move.x][bob.y].SetImage(CPoint(bob.x - move.x, bob.y), ori);
-		data[bob.x + 2 * move.x][bob.y].SetImage(CPoint(bob.x + 2 * move.x, bob.y), ori);
-	}
-	
-}
 
 int Map::boxtag(CPoint target, ObjectType boxtype) {
 	int boxtag = target.x;
@@ -241,13 +121,15 @@ int Map::boxtag(CPoint target, ObjectType boxtype) {
 
 
 void Map::MoveObject(int level, int move) {
-	ori = ReturnOri(level);
 	switch (move) {
 	case 0: // up
 		if (bob.y - 1 >= 0 && data[bob.x][bob.y - 1].ReturnObjectType() != ImpassibleBlock) {
 			// no box
-			if (data[bob.x][bob.y - 1].ReturnObjectType() == PassibleBlock)
-				movenobox(level, move);
+			if (data[bob.x][bob.y - 1].ReturnObjectType() == PassibleBlock) {
+				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
+			}
+				
 
 			// has Sbox
 			else if (data[bob.x][bob.y - 1].ReturnObjectType() == Sbox) {
@@ -255,7 +137,8 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					moveSbox(level, move);
+					data = movestep.moveSbox(data, level, move, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 
@@ -266,7 +149,8 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					moveMbox(level, move, mboxtag);
+					data = movestep.moveMbox(data, level, move, mboxtag, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 		}
@@ -275,7 +159,8 @@ void Map::MoveObject(int level, int move) {
 		if (bob.y + 1 < height &&  data[bob.x][bob.y + 1].ReturnObjectType() != ImpassibleBlock) {
 			// no box
 			if (data[bob.x][bob.y + 1].ReturnObjectType() == PassibleBlock) {
-				movenobox(level, move);
+				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 
 			// has box
@@ -284,7 +169,8 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					moveSbox(level, move);
+					data = movestep.moveSbox(data, level, move, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 			else if (data[bob.x][bob.y + 1].ReturnObjectType() == Mbox) {
@@ -293,7 +179,8 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					moveMbox(level, move, mboxtag);
+					data = movestep.moveMbox(data, level, move, mboxtag, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 		}
@@ -303,7 +190,8 @@ void Map::MoveObject(int level, int move) {
 		if (bob.x - 1 >= 0 && data[bob.x - 1][bob.y].ReturnObjectType() != ImpassibleBlock) {
 			// no box
 			if (data[bob.x - 1][bob.y].ReturnObjectType() == PassibleBlock) {
-				movenobox(level, move);
+				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 
 			// has Sbox
@@ -312,7 +200,8 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					moveSbox(level, move);
+					data = movestep.moveSbox(data, level, move, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 
@@ -323,7 +212,8 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					moveMbox(level, move, mboxtag);
+					data = movestep.moveMbox(data, level, move, mboxtag, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 		}
@@ -333,16 +223,18 @@ void Map::MoveObject(int level, int move) {
 		if (bob.x + 1 <=  width && data[bob.x + 1][bob.y].ReturnObjectType() != ImpassibleBlock) {
 			// no box
 			if (data[bob.x + 1][bob.y].ReturnObjectType() == PassibleBlock) {
-				movenobox(level, move);
+				data = movestep.movenobox(data, level, move, bob);
+				bob = movestep.bobmove(bob, move);
 			}
 
-			// has box
+			// has Sbox
 			else if (data[bob.x + 1][bob.y].ReturnObjectType() == Sbox) {
 				if (bob.x + 2 >= width || data[bob.x + 2][bob.y].ReturnObjectType() == ImpassibleBlock) {
 					break;
 				}
 				else {
-					moveSbox(level, move);
+					data = movestep.moveSbox(data, level, move, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 
@@ -353,7 +245,8 @@ void Map::MoveObject(int level, int move) {
 					break;
 				}
 				else {
-					moveMbox(level, move, mboxtag);
+					data = movestep.moveMbox(data, level, move, mboxtag, bob);
+					bob = movestep.bobmove(bob, move);
 				}
 			}
 		}
@@ -366,6 +259,10 @@ void Map::MoveObject(int level, int move) {
 	BobStep.push(bob);
 }
 
+
+//CPoint Map::ReturnOri(int level) {
+//	return CPoint(0, 0);
+//}
 
 ObjectType Map::ReturnObjectType(int x, int y) {
 	return data[x][y].ReturnObjectType();
