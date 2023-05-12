@@ -55,7 +55,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	"resources/clear7.bmp"
 		}, RGB(0, 0, 255));
 	clear_pic.SetTopLeft(0, 0);
-	clear_pic.SetFrameIndexOfBitmap(6);
+	clear_pic.SetAnimation(55, true);
+	clear_pic.ToggleAnimation();
 
 	background.LoadBitmapByString({
 	"resources/1_background.bmp",
@@ -110,15 +111,27 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	else if (nChar == VK_UP || nChar == 0x57) {
 		map.MoveObject(level, 0);
+		if (clear_level.IfClear(level, map)) {
+			clear_pic.ToggleAnimation();
+		}
 	}
 	else if (nChar == VK_DOWN || nChar == 0x53) {
 		map.MoveObject(level, 1);
+		if (clear_level.IfClear(level, map)) {
+			clear_pic.ToggleAnimation();
+		}
 	}
 	else if (nChar == VK_LEFT || nChar == 0x41) {
 		map.MoveObject(level, 2);
+		if (clear_level.IfClear(level, map)) {
+			clear_pic.ToggleAnimation();
+		}
 	}
 	else if (nChar == VK_RIGHT || nChar == 0x44) {
 		map.MoveObject(level, 3);
+		if (clear_level.IfClear(level, map)) {
+			clear_pic.ToggleAnimation();
+		}
 	}
 	else if (nChar == 0x52) {
 		map.MapStepClear();
