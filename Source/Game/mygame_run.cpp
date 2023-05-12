@@ -39,11 +39,23 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	"resources/transition3.bmp",
 	"resources/transition4.bmp",
 	"resources/transition5.bmp",
-	"resources/transition6.bmp",
+	"resources/transition6.bmp"
 		}, RGB(0, 0, 255));
 	transition.SetTopLeft(0, 0);
 	transition.SetAnimation(70, true);
 	transition.ToggleAnimation();
+
+	clear_pic.LoadBitmapByString({
+	"resources/clear1.bmp",
+	"resources/clear2.bmp",
+	"resources/clear3.bmp",
+	"resources/clear4.bmp",
+	"resources/clear5.bmp",
+	"resources/clear6.bmp",
+	"resources/clear7.bmp"
+		}, RGB(0, 0, 255));
+	clear_pic.SetTopLeft(0, 0);
+	clear_pic.SetFrameIndexOfBitmap(6);
 
 	background.LoadBitmapByString({
 	"resources/1_background.bmp",
@@ -199,6 +211,10 @@ void CGameStateRun::OnShow()
 		show_text_by_level();
 		map.Show();
 		show_transition();
+
+		if (clear_level.IfClear(level, map)) {
+			clear_pic.ShowBitmap();
+		}
 	}
 }
 
@@ -224,7 +240,8 @@ void CGameStateRun::show_text_by_level() {
 		text_art.TextBorder(pDC, 15, 695, 4, "Level " + std::to_string(level));
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 		CTextDraw::Print(pDC, 15, 695, "Level " + std::to_string(level));
-		CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
+
+		/*CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
 
 		CPoint ori = moveori.ReturnOri(level);
 		for (int i = 0; i < map.width; i++) {
@@ -239,7 +256,7 @@ void CGameStateRun::show_text_by_level() {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 40, std::to_string(clear_level.GetValue(i, j)));
 			}
 		}
-		CTextDraw::Print(pDC, 15, 0, std::to_string(clear_level.IfClear(level, map)));
+		CTextDraw::Print(pDC, 15, 0, std::to_string(clear_level.IfClear(level, map)));*/
 
 		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
 		
