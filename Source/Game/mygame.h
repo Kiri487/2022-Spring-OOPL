@@ -105,6 +105,7 @@ namespace game_framework {
 		void show_text_by_level();
 		void show_transition();
 		CMovingBitmap transition;
+		CMovingBitmap clear_pic;
 		CMovingBitmap background;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
