@@ -58,6 +58,19 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	clear_pic.SetAnimation(55, true);
 	clear_pic.ToggleAnimation();
 
+	dead_pic.LoadBitmapByString({
+	"resources/dead1.bmp",
+	"resources/dead2.bmp",
+	"resources/dead3.bmp",
+	"resources/dead4.bmp",
+	"resources/dead5.bmp",
+	"resources/dead6.bmp",
+	"resources/dead7.bmp"
+		}, RGB(0, 0, 255));
+	dead_pic.SetTopLeft(0, 0);
+	dead_pic.SetAnimation(55, true);
+	dead_pic.ToggleAnimation();
+
 	background.LoadBitmapByString({
 	"resources/1_background.bmp",
 	"resources/2_background.bmp",
@@ -97,7 +110,6 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == VK_RETURN) {
 
-		// !!! change level test !!! 
 		if (clear_level.IfClear(level, map)) {
 			level++;
 			if (level <= 16) {
@@ -107,38 +119,61 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				map.Matrix(level);
 			}
 		}
-		// !!! change level test !!! 
 	}
 	else if (nChar == VK_UP || nChar == 0x57) {
-		map.MoveObject(level, 0);
-		if (clear_level.IfClear(level, map)) {
-			clear_pic.ToggleAnimation();
+		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+			map.MoveObject(level, 0);
+			if (clear_level.IfClear(level, map)) {
+				clear_pic.ToggleAnimation();
+			}
+			else if (dead.IfDead(level, map)) {
+				dead_pic.ToggleAnimation();
+			}
 		}
 	}
 	else if (nChar == VK_DOWN || nChar == 0x53) {
-		map.MoveObject(level, 1);
-		if (clear_level.IfClear(level, map)) {
-			clear_pic.ToggleAnimation();
+		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+			map.MoveObject(level, 1);
+			if (clear_level.IfClear(level, map)) {
+				clear_pic.ToggleAnimation();
+			}
+			else if (dead.IfDead(level, map)) {
+				dead_pic.ToggleAnimation();
+			}
 		}
 	}
 	else if (nChar == VK_LEFT || nChar == 0x41) {
-		map.MoveObject(level, 2);
-		if (clear_level.IfClear(level, map)) {
-			clear_pic.ToggleAnimation();
+		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+			map.MoveObject(level, 2);
+			if (clear_level.IfClear(level, map)) {
+				clear_pic.ToggleAnimation();
+			}
+			else if (dead.IfDead(level, map)) {
+				dead_pic.ToggleAnimation();
+			}
 		}
 	}
 	else if (nChar == VK_RIGHT || nChar == 0x44) {
-		map.MoveObject(level, 3);
-		if (clear_level.IfClear(level, map)) {
-			clear_pic.ToggleAnimation();
+		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+			map.MoveObject(level, 3);
+			if (clear_level.IfClear(level, map)) {
+				clear_pic.ToggleAnimation();
+			}
+			else if (dead.IfDead(level, map)) {
+				dead_pic.ToggleAnimation();
+			}
 		}
 	}
 	else if (nChar == 0x52) {
-		map.MapStepClear();
-		map.Matrix(level);
+		if (clear_level.IfClear(level, map) == false) {
+			map.MapStepClear();
+			map.Matrix(level);
+		}
 	}
 	else if (nChar == 0x55) {
-		map.Undo();
+		if (clear_level.IfClear(level, map) == false) {
+			map.Undo();
+		}
 	}
 }
 
@@ -228,6 +263,9 @@ void CGameStateRun::OnShow()
 		if (clear_level.IfClear(level, map)) {
 			clear_pic.ShowBitmap();
 		}
+		else if (dead.IfDead(level, map)) {
+			dead_pic.ShowBitmap();
+		}
 	}
 }
 
@@ -269,7 +307,10 @@ void CGameStateRun::show_text_by_level() {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 40, std::to_string(clear_level.GetValue(i, j)));
 			}
 		}
-		CTextDraw::Print(pDC, 15, 0, std::to_string(clear_level.IfClear(level, map)));*/
+		*/
+
+		//CTextDraw::Print(pDC, 15, 100, "Clear? = " + std::to_string(clear_level.IfClear(level, map)));
+		//CTextDraw::Print(pDC, 15, 130, "Dead? = " + std::to_string(dead.IfDead(level, map))); 
 
 		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
 		
