@@ -10,6 +10,7 @@ private:
 	int level;
 	Move movestep;
 
+
 public:
 	int width, height;
 	void Matrix(int level);
