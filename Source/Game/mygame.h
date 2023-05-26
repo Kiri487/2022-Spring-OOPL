@@ -43,6 +43,7 @@
 #include "clear_level.h"
 #include "text_art.h"
 #include "move.h"
+#include "dead.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -106,6 +107,7 @@ namespace game_framework {
 		void show_transition();
 		CMovingBitmap transition;
 		CMovingBitmap clear_pic;
+		CMovingBitmap dead_pic;
 		CMovingBitmap background;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
@@ -117,6 +119,7 @@ namespace game_framework {
 		Object imagedata;
 		std::vector<game_framework::CMovingBitmap> imagedatashow;
 		ClearLevel clear_level;
+		Dead dead;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
