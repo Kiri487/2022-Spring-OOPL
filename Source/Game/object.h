@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../Library/gameutil.h"
-#include<vector>
+#include <vector>
+#include <unordered_map>
 
 enum ObjectType {
 	ImpassibleBlock,
@@ -17,6 +18,7 @@ class Object {
 private:
 	ObjectType objecttype; 
 	game_framework::CMovingBitmap image;
+	std::unordered_map<ObjectType, Object> StandardObject;
 	
 public:
 	void ShowObjectImage();
@@ -24,7 +26,8 @@ public:
 	ObjectType ReturnObjectType();
 	void SetImage(CPoint now, CPoint ori);
 	bool setbox;
-	void changeObjecttype(ObjectType change_objecttype);
+	void SetObject(ObjectType new_object);
+	void ObjectList();
 
 	//Object operator=(const Object &other);
 

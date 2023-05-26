@@ -68,6 +68,28 @@ void Object::SetImage(CPoint now, CPoint ori) {
 }
 
 
-void Object::changeObjecttype(ObjectType change_objecttype) {
-	objecttype = change_objecttype;
+void Object::SetObject(ObjectType new_object) {
+	image = StandardObject[new_object].image;
+	objecttype = new_object;
+}
+
+void Object::ObjectList() {
+	StandardObject[PassibleBlock];
+	StandardObject[ImpassibleBlock];
+
+	StandardObject[Character].image.LoadBitmapByString({ "resources/bob1.bmp", "resources/bob2.bmp", "resources/bob3.bmp" }, RGB(0, 0, 255));
+	StandardObject[Character].image.SetAnimation(165, false);
+	StandardObject[Character].objecttype = Character;
+
+	StandardObject[Sbox].image.LoadBitmapByString({ "resources/box_s.bmp" }, RGB(0, 0, 255));
+	StandardObject[Sbox].objecttype = Sbox;
+
+	StandardObject[Mbox].image.LoadBitmapByString({ "resources/box_m.bmp" }, RGB(0, 0, 255));
+	StandardObject[Mbox].objecttype = Mbox;
+
+	StandardObject[Lbox].image.LoadBitmapByString({ "resources/box_l.bmp" }, RGB(0, 0, 255));
+	StandardObject[Lbox].objecttype = Lbox;
+
+	StandardObject[Hole].image.LoadBitmapByString({ "resources/hole.bmp" }, RGB(0, 0, 255));
+	StandardObject[Hole].objecttype = Hole;
 }

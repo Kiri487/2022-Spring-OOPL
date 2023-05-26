@@ -18,10 +18,8 @@ std::vector<std::vector<Object>> Move::movenobox(std::vector<std::vector<Object>
 	ori = ReturnOri(level);
 
 	if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == PassibleBlock) {
-		Object temp;
-		temp = data[bob.x][bob.y];
-		data[bob.x][bob.y] = data[bob.x + move.x][bob.y + move.y];
-		data[bob.x + move.x][bob.y + move.y] = temp;
+		data[bob.x][bob.y].SetObject(PassibleBlock);
+		data[bob.x + move.x][bob.y + move.y].SetObject(Character);
 		bob.x += move.x;
 		bob.y += move.y;
 
@@ -32,13 +30,13 @@ std::vector<std::vector<Object>> Move::movenobox(std::vector<std::vector<Object>
 	return data;
 }
 
-std::vector<std::vector<Object>> Move::moveSbox(std::vector<std::vector<Object>> data, int level, int movetype, CPoint bob) {
+std::vector<std::vector<Object>> Move::moveSbox(std::vector<std::vector<Object>> data, int level, int movetype, CPoint bob, ObjectType objecttype) {
 
 	CPoint move = return_move(movetype);
 
 	if (data[bob.x + 2 * move.x][bob.y + 2 * move.y].ReturnObjectType() == Hole) {
-		data[bob.x + 2 * move.x][bob.y + 2 * move.y].changeObjecttype(PassibleBlock);
-		data[bob.x + move.x][bob.y + move.y].changeObjecttype(PassibleBlock);
+		data[bob.x + 2 * move.x][bob.y + 2 * move.y].SetObject(PassibleBlock);
+		data[bob.x + move.x][bob.y + move.y].SetObject(PassibleBlock);
 	}
 
 	int box_sum = 0;
@@ -50,66 +48,96 @@ std::vector<std::vector<Object>> Move::moveSbox(std::vector<std::vector<Object>>
 			break;
 		}
 	}
+
 	ori = ReturnOri(level);
-	Object temp;
-	temp = data[bob.x + (box_sum + 1) * move.x][bob.y + (box_sum + 1) * move.y];
-	data[bob.x + (box_sum + 1) * move.x][bob.y + (box_sum + 1) * move.y] = data[bob.x +  move.x][bob.y +  move.y];
-	data[bob.x + move.x][bob.y + move.y] = data[bob.x][bob.y];
-	data[bob.x][bob.y] = temp;
+
+	data[bob.x][bob.y].SetObject(PassibleBlock);
+	data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+
 	bob.x += move.x;
 	bob.y += move.y;
 
-	data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-	data[bob.x + move.x][bob.y + move.y].SetImage(CPoint(bob.x + move.x, bob.y + move.y), ori);
-	data[bob.x + box_sum * move.x][bob.y + box_sum * move.y].SetImage(CPoint(bob.x + box_sum * move.x, bob.y + box_sum * move.y), ori);
+	if (objecttype == Character) {
+		data[bob.x][bob.y].SetObject(Character);
+		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+	}
+	else if(objecttype == Mbox){
+		data[bob.x][bob.y].SetObject(Mbox);
+		if (data[bob.x - 1][bob.y].ReturnObjectType() == Mbox) {
+			data[bob.x - 1][bob.y].setbox = true;
+			data[bob.x - 1][bob.y].SetObject(Mbox);
+			data[bob.x - 1][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+		}
+		else {
+			data[bob.x + 1][bob.y].SetObject(Mbox);
+			data[bob.x][bob.y].setbox = true;
+			data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
+		}
+	}
 	
+
+	for (int i = 1; i <= box_sum; i++) {
+		data[bob.x + i*move.x][bob.y + i*move.y].SetObject(Sbox);
+		data[bob.x + i*move.x][bob.y + i*move.y].SetImage(CPoint(bob.x + i*move.x, bob.y + i*move.y), ori);
+	}
 	return data;
 }
 
-std::vector<std::vector<Object>> Move::moveMbox(std::vector<std::vector<Object>> data, int level, int movetype, int mboxtag, CPoint bob) {
+std::vector<std::vector<Object>> Move::moveMbox(std::vector<std::vector<Object>> data, int level, int movetype, int mboxtag, CPoint now, ObjectType objecttype) {
 	CPoint move = return_move(movetype);
 	ori = ReturnOri(level);
-	Object temp;
+
+	data[now.x][now.y].SetObject(PassibleBlock);
+	data[now.x][now.y].SetImage(CPoint(mboxtag, now.y), ori);
+	data[mboxtag][now.y + move.y].SetObject(PassibleBlock);
+	data[mboxtag][now.y + move.y].SetImage(CPoint(mboxtag + 1, now.y + move.y), ori);
+	data[mboxtag + 1][now.y + move.y].SetObject(PassibleBlock);
+	data[mboxtag + 1][now.y + move.y].SetImage(CPoint(mboxtag + 1, now.y + move.y), ori);
+	
+	now.x += move.x;
+	now.y += move.y;
+
+	data[now.x][now.y].SetObject(objecttype);
+	data[now.x][now.y].SetImage(CPoint(now.x, now.y), ori);
+
+
+	data[mboxtag + move.x][now.y + move.y].SetObject(Mbox);
+	data[mboxtag + move.x][now.y + move.y].setbox = true;
+	data[mboxtag + move.x][now.y + move.y].SetImage(CPoint(mboxtag + move.x, now.y + move.y), ori);
+	data[mboxtag + move.x + 1][now.y + move.y].SetObject(Mbox);
+	data[mboxtag + move.x + 1][now.y + move.y].setbox = false;
+	data[mboxtag + move.x + 1][now.y + move.y].SetImage(CPoint(mboxtag + move.x + 1, now.y + move.y), ori);
+
+
+
+	return data;
+}
+
+std::vector<std::vector<Object>> Move::moveLbox(std::vector<std::vector<Object>> data, int level, int movetype, CPoint lboxtag, CPoint now, ObjectType objecttype) {
+	CPoint move = return_move(movetype);
+	ori = ReturnOri(level);
+
+	data[now.x][now.y].SetObject(PassibleBlock);
+	data[now.x][now.y].SetImage(CPoint(lboxtag.x, now.y), ori);
+	data[lboxtag.x][now.y + move.y].SetObject(PassibleBlock);
+	data[lboxtag.x][now.y + move.y].SetImage(CPoint(lboxtag.x + 1, now.y + move.y), ori);
+	data[lboxtag.x + 1][now.y + move.y].SetObject(PassibleBlock);
+	data[lboxtag.x + 1][now.y + move.y].SetImage(CPoint(lboxtag.x + 1, now.y + move.y), ori);
+
+	now.x += move.x;
+	now.y += move.y;
+
+	data[now.x][now.y].SetObject(objecttype);
+	data[now.x][now.y].SetImage(CPoint(now.x, now.y), ori);
+
+
 	if (movetype == 0 || movetype == 1) {
-		temp = data[mboxtag][bob.y + 2 * move.y];
-		data[mboxtag][bob.y + 2 * move.y] = data[mboxtag][bob.y + move.y];
-		data[mboxtag][bob.y + move.y] = temp;
-
-		temp = data[mboxtag + 1][bob.y + 2 * move.y];
-		data[mboxtag + 1][bob.y + 2 * move.y] = data[mboxtag + 1][bob.y + move.y];
-		data[mboxtag + 1][bob.y + move.y] = temp;
-
-		temp = data[bob.x][bob.y + move.y];
-		data[bob.x][bob.y + move.y] = data[bob.x][bob.y];
-		data[bob.x][bob.y] = temp;
-
-		bob.x += move.x;
-		bob.y += move.y;
-		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-		data[bob.x + move.x][bob.y + move.y].SetImage(CPoint(bob.x + move.x, bob.y + move.y), ori);
-		data[mboxtag][bob.y].SetImage(CPoint(mboxtag, bob.y), ori);
-		data[mboxtag + move.x][bob.y + move.y].SetImage(CPoint(mboxtag + move.x, bob.y + move.y), ori);
+		
 	}
-	else {
-		temp = data[bob.x + 3 * move.x][bob.y];
-		data[bob.x + 3 * move.x][bob.y] = data[bob.x + 2 * move.x][bob.y];
-		data[bob.x + 2 * move.x][bob.y] = temp;
-
-		temp = data[bob.x + 2 * move.x][bob.y];
-		data[bob.x + 2 * move.x][bob.y] = data[bob.x + move.x][bob.y];
-		data[bob.x + move.x][bob.y] = temp;
-
-		temp = data[bob.x + move.x][bob.y];
-		data[bob.x + move.x][bob.y] = data[bob.x][bob.y];
-		data[bob.x][bob.y] = temp;
-
-		bob.x += move.x;
-		bob.y += move.y;
-		data[bob.x][bob.y].SetImage(CPoint(bob.x, bob.y), ori);
-		data[bob.x + move.x][bob.y].SetImage(CPoint(bob.x + move.x, bob.y), ori);
-		data[bob.x - move.x][bob.y].SetImage(CPoint(bob.x - move.x, bob.y), ori);
-		data[bob.x + 2 * move.x][bob.y].SetImage(CPoint(bob.x + 2 * move.x, bob.y), ori);
+	else if (movetype == 1 || movetype == 2) {
+		
 	}
+	
 	return data;
 }
 
