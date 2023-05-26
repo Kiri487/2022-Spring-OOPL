@@ -7,8 +7,23 @@ Dead::Dead() {
 
 bool Dead::IfDead(int level, Map map) {
 
+	int Sbox_count = 0;
 	int Mbox_count = 0;
 	int Lbox_count = 0;
+
+	if (level == 6) {
+		for (int i = 0; i < map.width; i++) {
+			for (int j = 0; j < map.height; j++) {
+				if (map.ReturnObjectType(i, j) == Sbox) {
+					Sbox_count = 1;
+				}
+			}
+		}
+
+		if (Sbox_count == 0) {
+			return true;
+		}
+	}
 
 	for (int i = 0; i < map.width; i++) {
 		for (int j = 0; j < map.height; j++) {
