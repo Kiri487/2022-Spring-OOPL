@@ -10,7 +10,6 @@ private:
 	int level;
 	Move movestep;
 
-
 public:
 	int width, height;
 	void Matrix(int level);
@@ -19,7 +18,7 @@ public:
 	void Undo();
 	void MapStepClear();
 	std::vector<std::vector<Object>> GetNowMap();
-	int boxtag(CPoint target, ObjectType boxtype);
+	CPoint boxtag(CPoint target, ObjectType boxtype);
 	bool boundary(CPoint target, int movetag);
 	CPoint ori;
 	ObjectType ReturnObjectType(int x, int y);
@@ -27,6 +26,7 @@ public:
 	CPoint bob;
 	std::stack<std::vector<std::vector<Object>>> MapStep;
 	std::stack<CPoint> BobStep;
+	Object objectlist;
 
 };
 

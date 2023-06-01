@@ -40,7 +40,7 @@ void Object::LoadObjectImage(ObjectType objecttype, CPoint now, CPoint ori) {
 	}
 
 	SetImage(now, ori);
-	if (objecttype == Sbox || objecttype == Mbox || objecttype == Lbox && setbox == TRUE) {
+	if (objecttype == Sbox || objecttype == Mbox || objecttype == Lbox) {
 		image.SetTopLeft(ori.x + 83 * now.x + 6, ori.y + 83 * now.y + 6);
 	}
 	
@@ -53,7 +53,7 @@ ObjectType Object::ReturnObjectType() {
 }
 
 void Object::SetImage(CPoint now, CPoint ori) {
-	if (objecttype == Sbox || objecttype == Mbox || objecttype == Lbox && setbox == TRUE) {
+	if (objecttype == Sbox || objecttype == Mbox || objecttype == Lbox) {
 		image.SetTopLeft(ori.x + 83 * now.x + 6, ori.y + 83 * now.y + 6);
 	}
 	else if (objecttype == Hole) {
