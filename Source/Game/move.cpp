@@ -18,8 +18,10 @@ std::vector<std::vector<Object>> Move::movenobox(std::vector<std::vector<Object>
 	ori = ReturnOri(level);
 
 	if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == PassibleBlock) {
+		
 		data[bob.x][bob.y].SetObject(PassibleBlock);
 		data[bob.x + move.x][bob.y + move.y].SetObject(Character);
+
 		bob.x += move.x;
 		bob.y += move.y;
 
@@ -185,36 +187,201 @@ std::vector<std::vector<Object>> Move::moveLbox(std::vector<std::vector<Object>>
 	CPoint move = return_move(movetype);
 	ori = ReturnOri(level);
 
-	data[now.x][now.y].SetObject(PassibleBlock);
-	data[now.x][now.y].SetImage(CPoint(now.x, now.y), ori);
+	
 	switch (movetype) {
 	case 0:
 		data[lboxtag.x][lboxtag.y + 1].SetObject(PassibleBlock);
 		data[lboxtag.x][lboxtag.y + 1].SetImage(CPoint(lboxtag.x, lboxtag.y + 1), ori);
 		data[lboxtag.x + 1][lboxtag.y + 1].SetObject(PassibleBlock);
 		data[lboxtag.x + 1][lboxtag.y + 1].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 1), ori);
+
+		if (data[lboxtag.x][lboxtag.y - 1].ReturnObjectType() == Sbox) {
+			data[lboxtag.x][lboxtag.y - 2].SetObject(Sbox);
+			data[lboxtag.x][lboxtag.y - 2].SetImage(CPoint(lboxtag.x, lboxtag.y - 2), ori);
+			data[lboxtag.x][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x][lboxtag.y - 1].SetImage(CPoint(lboxtag.x, lboxtag.y - 1), ori);
+		}
+		if (data[lboxtag.x + 1][lboxtag.y - 1].ReturnObjectType() == Sbox) {
+			data[lboxtag.x + 1][lboxtag.y - 2].SetObject(Sbox);
+			data[lboxtag.x + 1][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 2), ori);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 1), ori);
+		}
+
+		if (data[lboxtag.x][lboxtag.y - 1].ReturnObjectType() == Mbox && data[lboxtag.x + 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+			data[lboxtag.x][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x][lboxtag.y - 2].setbox = true;
+			data[lboxtag.x][lboxtag.y - 2].SetImage(CPoint(lboxtag.x, lboxtag.y - 2), ori);
+			data[lboxtag.x + 1][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x + 1][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x + 1][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 2), ori);
+			data[lboxtag.x][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x][lboxtag.y - 1].SetImage(CPoint(lboxtag.x, lboxtag.y - 1), ori);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 1), ori);
+		}
+		else if(data[lboxtag.x][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+			data[lboxtag.x][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x][lboxtag.y - 2].SetImage(CPoint(lboxtag.x, lboxtag.y - 2), ori);
+			data[lboxtag.x - 1][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x - 1][lboxtag.y - 2].setbox = true;
+			data[lboxtag.x - 1][lboxtag.y - 2].SetImage(CPoint(lboxtag.x - 1, lboxtag.y - 2), ori);
+			data[lboxtag.x][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x][lboxtag.y - 1].SetImage(CPoint(lboxtag.x, lboxtag.y - 1), ori);
+			data[lboxtag.x - 1][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x - 1][lboxtag.y - 1].SetImage(CPoint(lboxtag.x - 1, lboxtag.y - 1), ori);
+		}
+		else if (data[lboxtag.x + 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+			data[lboxtag.x + 2][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x + 2][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x + 2][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 2, lboxtag.y - 2), ori);
+			data[lboxtag.x + 1][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x + 1][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x + 1][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 2), ori);
+			data[lboxtag.x + 2][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 2][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 2, lboxtag.y - 1), ori);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 1), ori);
+		}
+
 		break;
 	case 1:
 		data[lboxtag.x][lboxtag.y].SetObject(PassibleBlock);
 		data[lboxtag.x][lboxtag.y].SetImage(CPoint(lboxtag.x, lboxtag.y), ori);
 		data[lboxtag.x + 1][lboxtag.y].SetObject(PassibleBlock);
 		data[lboxtag.x + 1][lboxtag.y].SetImage(CPoint(lboxtag.x + 1, lboxtag.y), ori);
+
+		if (data[lboxtag.x][lboxtag.y + 2].ReturnObjectType() == Sbox) {
+			data[lboxtag.x][lboxtag.y + 3].SetObject(Sbox);
+			data[lboxtag.x][lboxtag.y + 3].SetImage(CPoint(lboxtag.x, lboxtag.y + 3), ori);
+			data[lboxtag.x][lboxtag.y + 2].SetObject(PassibleBlock);
+			data[lboxtag.x][lboxtag.y + 2].SetImage(CPoint(lboxtag.x, lboxtag.y + 2), ori);
+		}
+		if (data[lboxtag.x + 1][lboxtag.y + 2].ReturnObjectType() == Sbox) {
+			data[lboxtag.x + 1][lboxtag.y + 3].SetObject(Sbox);
+			data[lboxtag.x + 1][lboxtag.y + 3].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 3), ori);
+			data[lboxtag.x + 1][lboxtag.y + 2].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y + 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 2), ori);
+		}
+
+		if (data[lboxtag.x][lboxtag.y + 2].ReturnObjectType() == Mbox && data[lboxtag.x + 1][lboxtag.y + 2].ReturnObjectType() == Mbox) {
+			data[lboxtag.x][lboxtag.y + 3].SetObject(Mbox);
+			data[lboxtag.x][lboxtag.y + 3].setbox = true;
+			data[lboxtag.x][lboxtag.y + 3].SetImage(CPoint(lboxtag.x, lboxtag.y + 3), ori);
+			data[lboxtag.x + 1][lboxtag.y + 3].SetObject(Mbox);
+			data[lboxtag.x + 1][lboxtag.y + 3].setbox = false;
+			data[lboxtag.x + 1][lboxtag.y + 3].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 3), ori);
+			data[lboxtag.x][lboxtag.y + 2].SetObject(PassibleBlock);
+			data[lboxtag.x][lboxtag.y + 2].SetImage(CPoint(lboxtag.x, lboxtag.y + 2), ori);
+			data[lboxtag.x + 1][lboxtag.y + 2].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y + 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 2), ori);
+		}
+		else if(data[lboxtag.x + 1][lboxtag.y + 2].ReturnObjectType() == Mbox) {
+			data[lboxtag.x + 2][lboxtag.y + 3].SetObject(Mbox);
+			data[lboxtag.x + 2][lboxtag.y + 3].setbox = false;
+			data[lboxtag.x + 2][lboxtag.y + 3].SetImage(CPoint(lboxtag.x + 2, lboxtag.y + 3), ori);
+			data[lboxtag.x + 1][lboxtag.y + 3].SetObject(Mbox);
+			data[lboxtag.x + 1][lboxtag.y + 3].setbox = true;
+			data[lboxtag.x + 1][lboxtag.y + 3].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 3), ori);
+			data[lboxtag.x + 2][lboxtag.y + 2].SetObject(PassibleBlock);
+			data[lboxtag.x + 2][lboxtag.y + 2].SetImage(CPoint(lboxtag.x + 2, lboxtag.y + 2), ori);
+			data[lboxtag.x + 1][lboxtag.y + 2].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y + 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 2), ori);
+		}
+		else if (data[lboxtag.x + 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+			data[lboxtag.x + 2][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x + 2][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x + 2][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 2, lboxtag.y - 2), ori);
+			data[lboxtag.x + 1][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x + 1][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x + 1][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 2), ori);
+			data[lboxtag.x + 2][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 2][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 2, lboxtag.y - 1), ori);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 1), ori);
+		}
 		break;
 	case 2:
 		data[lboxtag.x + 1][lboxtag.y].SetObject(PassibleBlock);
 		data[lboxtag.x + 1][lboxtag.y].SetImage(CPoint(lboxtag.x + 1, lboxtag.y), ori);
 		data[lboxtag.x + 1][lboxtag.y + 1].SetObject(PassibleBlock);
 		data[lboxtag.x + 1][lboxtag.y + 1].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 1), ori);
+
+		if (data[lboxtag.x - 1][lboxtag.y].ReturnObjectType() == Sbox) {
+			data[lboxtag.x - 2][lboxtag.y].SetObject(Sbox);
+			data[lboxtag.x - 2][lboxtag.y].SetImage(CPoint(lboxtag.x - 2, lboxtag.y), ori);
+			data[lboxtag.x - 1][lboxtag.y].SetObject(PassibleBlock);
+			data[lboxtag.x - 1][lboxtag.y].SetImage(CPoint(lboxtag.x - 1, lboxtag.y), ori);
+		}
+		else if (data[lboxtag.x - 1][lboxtag.y + 1].ReturnObjectType() == Sbox) {
+			data[lboxtag.x - 2][lboxtag.y + 1].SetObject(Sbox);
+			data[lboxtag.x - 2][lboxtag.y + 1].SetImage(CPoint(lboxtag.x - 2, lboxtag.y + 1), ori);
+			data[lboxtag.x - 1][lboxtag.y + 1].SetObject(PassibleBlock);
+			data[lboxtag.x - 1][lboxtag.y + 1].SetImage(CPoint(lboxtag.x - 1, lboxtag.y + 1), ori);
+		}
+
+		if (data[lboxtag.x][lboxtag.y].ReturnObjectType() == Mbox && data[lboxtag.x + 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+			data[lboxtag.x][lboxtag.y].SetObject(Mbox);
+			data[lboxtag.x][lboxtag.y].setbox = true;
+			data[lboxtag.x][lboxtag.y].SetImage(CPoint(lboxtag.x, lboxtag.y - 2), ori);
+			data[lboxtag.x + 1][lboxtag.y].SetObject(Mbox);
+			data[lboxtag.x + 1][lboxtag.y].setbox = false;
+			data[lboxtag.x + 1][lboxtag.y].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 2), ori);
+			data[lboxtag.x][lboxtag.y].SetObject(PassibleBlock);
+			data[lboxtag.x][lboxtag.y].SetImage(CPoint(lboxtag.x, lboxtag.y - 1), ori);
+			data[lboxtag.x + 1][lboxtag.y].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 1), ori);
+		}
+		else if (data[lboxtag.x][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+			data[lboxtag.x][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x][lboxtag.y - 2].SetImage(CPoint(lboxtag.x, lboxtag.y - 2), ori);
+			data[lboxtag.x - 1][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x - 1][lboxtag.y - 2].setbox = true;
+			data[lboxtag.x - 1][lboxtag.y - 2].SetImage(CPoint(lboxtag.x - 1, lboxtag.y - 2), ori);
+			data[lboxtag.x][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x][lboxtag.y - 1].SetImage(CPoint(lboxtag.x, lboxtag.y - 1), ori);
+			data[lboxtag.x - 1][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x - 1][lboxtag.y - 1].SetImage(CPoint(lboxtag.x - 1, lboxtag.y - 1), ori);
+		}
+		else if (data[lboxtag.x + 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+			data[lboxtag.x + 2][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x + 2][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x + 2][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 2, lboxtag.y - 2), ori);
+			data[lboxtag.x + 1][lboxtag.y - 2].SetObject(Mbox);
+			data[lboxtag.x + 1][lboxtag.y - 2].setbox = false;
+			data[lboxtag.x + 1][lboxtag.y - 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 2), ori);
+			data[lboxtag.x + 2][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 2][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 2, lboxtag.y - 1), ori);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 1][lboxtag.y - 1].SetImage(CPoint(lboxtag.x + 1, lboxtag.y - 1), ori);
+		}
 		break;
 	case 3:
 		data[lboxtag.x][lboxtag.y].SetObject(PassibleBlock);
 		data[lboxtag.x][lboxtag.y].SetImage(CPoint(lboxtag.x, lboxtag.y), ori);
 		data[lboxtag.x][lboxtag.y + 1].SetObject(PassibleBlock);
 		data[lboxtag.x][lboxtag.y + 1].SetImage(CPoint(lboxtag.x, lboxtag.y + 1), ori);
+
+		if (data[lboxtag.x + 2][lboxtag.y].ReturnObjectType() == Sbox) {
+			data[lboxtag.x + 3][lboxtag.y].SetObject(Sbox);
+			data[lboxtag.x + 3][lboxtag.y].SetImage(CPoint(lboxtag.x + 3, lboxtag.y), ori);
+			data[lboxtag.x + 2][lboxtag.y].SetObject(PassibleBlock);
+			data[lboxtag.x + 2][lboxtag.y].SetImage(CPoint(lboxtag.x + 2, lboxtag.y), ori);
+		}
+		else if (data[lboxtag.x + 2][lboxtag.y + 1].ReturnObjectType() == Sbox) {
+			data[lboxtag.x + 3][lboxtag.y + 1].SetObject(Sbox);
+			data[lboxtag.x + 3][lboxtag.y + 1].SetImage(CPoint(lboxtag.x + 3, lboxtag.y + 1), ori);
+			data[lboxtag.x + 2][lboxtag.y + 1].SetObject(PassibleBlock);
+			data[lboxtag.x + 2][lboxtag.y + 1].SetImage(CPoint(lboxtag.x + 2, lboxtag.y + 1), ori);
+		}
 		break;
 	default:
 		break;
 	}
+	data[now.x][now.y].SetObject(PassibleBlock);
+	data[now.x][now.y].SetImage(CPoint(now.x, now.y), ori);
 	data[lboxtag.x + move.x][lboxtag.y + move.y].SetObject(Lbox);
 	data[lboxtag.x + move.x][lboxtag.y + move.y].SetImage(CPoint(lboxtag.x + move.x, lboxtag.y + move.y), ori);
 	data[lboxtag.x + move.x][lboxtag.y + move.y].setbox = true;

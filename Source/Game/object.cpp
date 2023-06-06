@@ -2,6 +2,9 @@
 #include "object.h"
 #include "map.h"
 
+bool Object::standardObjectLoaded = false;
+std::unordered_map<ObjectType, Object> Object::StandardObject;
+
 void Object::ShowObjectImage() {
 	if (objecttype == Mbox) {
 		if(setbox == TRUE)
@@ -74,6 +77,8 @@ void Object::SetObject(ObjectType new_object) {
 }
 
 void Object::ObjectList() {
+	if (standardObjectLoaded) return;
+
 	StandardObject[PassibleBlock];
 	StandardObject[ImpassibleBlock];
 
@@ -92,4 +97,6 @@ void Object::ObjectList() {
 
 	StandardObject[Hole].image.LoadBitmapByString({ "resources/hole.bmp" }, RGB(0, 0, 255));
 	StandardObject[Hole].objecttype = Hole;
+
+	standardObjectLoaded = true;
 }
