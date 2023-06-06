@@ -18,7 +18,8 @@ class Object {
 private:
 	ObjectType objecttype; 
 	game_framework::CMovingBitmap image;
-	std::unordered_map<ObjectType, Object> StandardObject;
+	static bool standardObjectLoaded;
+	static std::unordered_map<ObjectType, Object> StandardObject;
 	
 public:
 	void ShowObjectImage();

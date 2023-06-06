@@ -200,6 +200,28 @@ void Map::MoveObject(int level, int movetype) {
 				movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width) &&
 				movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y + 1), movetype, height, width) &&
 				movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width)) {
+				if (movetype == 0) {
+					if (data[lboxtag.x][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+						if (data[lboxtag.x - 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+							if (movestep.moviable(data, CPoint(lboxtag.x - 1, lboxtag.y - 1), movetype, height, width)) {
+							}
+							else {
+								return;
+							}
+						}
+					}
+					else if(data[lboxtag.x + 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
+						if (movestep.moviable(data, CPoint(lboxtag.x + 2, lboxtag.y - 1), movetype, height, width)) {
+						}
+						else {
+							return;
+						}
+					}
+				}
+				else if (movetype == 1) {
+
+				}
+				
 				data = movestep.moveLbox(data, level, movetype, lboxtag, bob, Character);
 				bob = movestep.bobmove(bob, movetype);
 			}
