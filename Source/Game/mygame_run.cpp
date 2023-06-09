@@ -7,6 +7,7 @@
 #include "../Library/gamecore.h"
 #include "mygame.h"
 #include <string>
+#include <ctime>
 
 using namespace game_framework;
 
@@ -25,6 +26,7 @@ CGameStateRun::~CGameStateRun()
 void CGameStateRun::OnBeginState()
 {
 	map.Matrix(level);
+	start_time = time(NULL);
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -100,8 +102,14 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	exit_icon.LoadBitmapByString({ "resources/exit.bmp" });
 	exit_icon.SetTopLeft(25, 25);
 
+	CAudio::Instance() -> Load(AUDIO_BGM, "resources/bgm.wav");
+	CAudio::Instance() -> Play(AUDIO_BGM, true);
+
+	CAudio::Instance() -> Load(AUDIO_WALK, "resources/walking.wav");
+	CAudio::Instance() -> Load(AUDIO_TRANS, "resources/trans.wav");
+
 	choose_level.Init();
-	clear_level.GoalLocation(1);
+	clear_level.GoalLocation(level);
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -110,70 +118,114 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == VK_RETURN) {
 
-		if (clear_level.IfClear(level, map)) {
+		if (clear) {
 			level++;
 			if (level <= 16) {
-				transition.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_TRANS);
+				}
 				clear_level.GoalLocation(level);
 				map.MapStepClear();
 				map.Matrix(level);
+				clear = false;
+				death = false;
+				transition.ToggleAnimation();
+				start_time = time(NULL);
 			}
 		}
 	}
-	else if (nChar == VK_UP || nChar == 0x57) {
-		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+	else if (nChar == VK_UP || nChar == 'W') {
+		if (clear == false /*&& death == false*/) {
 			map.MoveObject(level, 0);
+			clear = clear_level.IfClear(level, map);
+			death = dead.IfDead(level, map, clear_level);
+			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+				CAudio::Instance() -> Play(AUDIO_WALK);
+			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
 			}
-			else if (dead.IfDead(level, map)) {
+			else if (death) {
 				dead_pic.ToggleAnimation();
 			}
 		}
 	}
-	else if (nChar == VK_DOWN || nChar == 0x53) {
-		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+	else if (nChar == VK_DOWN || nChar == 'S') {
+		if (clear == false /*&& death == false*/) {
 			map.MoveObject(level, 1);
+			clear = clear_level.IfClear(level, map);
+			death = dead.IfDead(level, map, clear_level);
+			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+				CAudio::Instance() -> Play(AUDIO_WALK);
+			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
 			}
-			else if (dead.IfDead(level, map)) {
+			else if (death) {
 				dead_pic.ToggleAnimation();
 			}
 		}
 	}
-	else if (nChar == VK_LEFT || nChar == 0x41) {
-		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+	else if (nChar == VK_LEFT || nChar == 'A') {
+		if (clear == false /*&& death == false*/) {
 			map.MoveObject(level, 2);
+			clear = clear_level.IfClear(level, map);
+			death = dead.IfDead(level, map, clear_level);
+			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+				CAudio::Instance() -> Play(AUDIO_WALK);
+			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
 			}
-			else if (dead.IfDead(level, map)) {
+			else if (death) {
 				dead_pic.ToggleAnimation();
 			}
 		}
 	}
-	else if (nChar == VK_RIGHT || nChar == 0x44) {
-		if (clear_level.IfClear(level, map) == false && dead.IfDead(level, map) == false) {
+	else if (nChar == VK_RIGHT || nChar == 'D') {
+		if (clear == false /*&& death == false*/) {
 			map.MoveObject(level, 3);
+			clear = clear_level.IfClear(level, map);
+			death = dead.IfDead(level, map, clear_level);
+			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+				CAudio::Instance() -> Play(AUDIO_WALK);
+			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
 			}
-			else if (dead.IfDead(level, map)) {
+			else if (death) {
 				dead_pic.ToggleAnimation();
 			}
 		}
 	}
-	else if (nChar == 0x52) {
-		if (clear_level.IfClear(level, map) == false) {
+	else if (nChar == 'R') {
+		if (clear == false) {
 			map.MapStepClear();
 			map.Matrix(level);
+			clear = false;
+			death = false;
+			start_time = time(NULL);
 		}
 	}
-	else if (nChar == 0x55) {
-		if (clear_level.IfClear(level, map) == false) {
+	else if (nChar == 'U') {
+		if (clear == false && timer()[0] < 6) {
 			map.Undo();
+			clear = clear_level.IfClear(level, map);
+			death = dead.IfDead(level, map, clear_level);
 		}
+	}
+	else if (nChar == VK_TAB && level < 16) {
+		level ++;
+		if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+			CAudio::Instance() -> Play(AUDIO_TRANS);
+		}
+		clear_level.GoalLocation(level);
+		map.MapStepClear();
+		map.Matrix(level);
+		clear = false;
+		death = false;
+		transition.ToggleAnimation();
+		start_time = time(NULL);
 	}
 }
 
@@ -187,9 +239,11 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的
 	if (point.x >= music_icon.GetLeft() && point.x <= music_icon.GetLeft() + music_icon.GetWidth() && point.y >= music_icon.GetTop() && point.y <= music_icon.GetTop() + music_icon.GetHeight()) {
 		if (music_icon.GetFrameIndexOfBitmap() == 0) {
 			music_icon.SetFrameIndexOfBitmap(1);
+			CAudio::Instance() -> Stop(AUDIO_BGM);
 		}
 		else {
 			music_icon.SetFrameIndexOfBitmap(0);
+			CAudio::Instance() -> Play(AUDIO_BGM, true);
 		}	
 	}
 
@@ -208,18 +262,27 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的
 		if (point.x >= exit_icon.GetLeft() && point.x <= exit_icon.GetLeft() + exit_icon.GetWidth() && point.y >= exit_icon.GetTop() && point.y <= exit_icon.GetTop() + exit_icon.GetHeight()) {
 			choose_level.state = true;
 			transition.ToggleAnimation();
+			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+				CAudio::Instance() -> Play(AUDIO_TRANS);
+			}
 		}
 	}
 
-	//choose level
+	// choose level
 	if (choose_level.state == true) {
 		if (choose_level.press_level_button(point) >= 0 && choose_level.press_level_button(point) <= 17) {
 			level = choose_level.press_level_button(point);
+			clear_level.GoalLocation(level);
 			map.MapStepClear();
 			map.Matrix(level);
-			clear_level.GoalLocation(level);
-			choose_level.state = false;
+			clear = false;
+			death = false;
 			transition.ToggleAnimation();
+			start_time = time(NULL);
+			choose_level.state = false;
+			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+				CAudio::Instance() -> Play(AUDIO_TRANS);
+			}
 		}
 	}
 }
@@ -260,12 +323,12 @@ void CGameStateRun::OnShow()
 		map.Show();
 		show_transition();
 
-		if (clear_level.IfClear(level, map)) {
+		if (clear) {
 			clear_pic.ShowBitmap();
 		}
-		else if (dead.IfDead(level, map)) {
+		/*else if (death) {
 			dead_pic.ShowBitmap();
-		}
+		}*/
 	}
 }
 
@@ -288,11 +351,16 @@ void CGameStateRun::show_text_by_level() {
 	
 	if (level >= 1 && level <= 16) {
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
-		text_art.TextBorder(pDC, 15, 695, 4, "Level " + std::to_string(level));
+		text_art.TextBorder(pDC, 15, 695, 4, "LEVEL " + std::to_string(level));
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
-		CTextDraw::Print(pDC, 15, 695, "Level " + std::to_string(level));
+		CTextDraw::Print(pDC, 15, 695, "LEVEL " + std::to_string(level));
 
-		/*CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
+		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
+		text_art.TextBorder(pDC, 1280, 695, 4, "TIME: " + timer());
+		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
+		CTextDraw::Print(pDC, 1280, 695, "TIME: " + timer());
+
+		//CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
 
 		CPoint ori = moveori.ReturnOri(level);
 		for (int i = 0; i < map.width; i++) {
@@ -307,10 +375,10 @@ void CGameStateRun::show_text_by_level() {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j + 40, std::to_string(clear_level.GetValue(i, j)));
 			}
 		}
-		*/
+		
 
-		//CTextDraw::Print(pDC, 15, 100, "Clear? = " + std::to_string(clear_level.IfClear(level, map)));
-		//CTextDraw::Print(pDC, 15, 130, "Dead? = " + std::to_string(dead.IfDead(level, map))); 
+		CTextDraw::Print(pDC, 15, 100, "Clear? = " + std::to_string(clear));
+		CTextDraw::Print(pDC, 15, 130, "Dead? = " + std::to_string(death)); 
 
 		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
 		
@@ -323,4 +391,27 @@ void CGameStateRun::show_transition() {
 	if (level <= 16) {
 		transition.ShowBitmap();
 	}
+}
+
+string CGameStateRun::timer() {
+	double pass_time;
+	int m, s;
+	string m_text = "0", s_text = "0";
+
+	if (clear == false && death == false) {
+		end_time = time(NULL);
+	}
+	pass_time = difftime(end_time, start_time);
+	m = (int) pass_time / 60;
+	s = (int) pass_time % 60;
+	fflush(stdout);
+
+	(m >= 0 && m < 10) ? (m_text = "0" + std::to_string(m)) : (m_text = std::to_string(m));
+	(s >= 0 && s < 10) ? (s_text = "0" + std::to_string(s)) : (s_text = std::to_string(s));
+
+	if (m >= 60) {
+		death = true;
+	}
+
+	return(m_text + ":" + s_text);
 }

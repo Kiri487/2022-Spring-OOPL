@@ -51,9 +51,9 @@ namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 
 	enum AUDIO_ID {				// 定義各種音效的編號
-		AUDIO_DING,				// 0
-		AUDIO_LAKE,				// 1
-		AUDIO_NTUT				// 2
+		AUDIO_BGM,				// 0
+		AUDIO_WALK,				// 1
+		AUDIO_TRANS,            // 2
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -96,6 +96,7 @@ namespace game_framework {
 		void OnMouseMove(UINT nFlags, CPoint point);	// 處理滑鼠的動作 
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
+		string timer();
 		int level = 1;
 		bool enter = false;
 	protected:
@@ -105,6 +106,10 @@ namespace game_framework {
 		void show_image_by_level();
 		void show_text_by_level();
 		void show_transition();
+		bool clear = false;
+		bool death = false;
+		time_t start_time;
+		time_t end_time;
 		CMovingBitmap transition;
 		CMovingBitmap clear_pic;
 		CMovingBitmap dead_pic;
