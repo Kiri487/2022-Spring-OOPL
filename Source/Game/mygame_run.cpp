@@ -107,6 +107,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 	CAudio::Instance() -> Load(AUDIO_WALK, "resources/walking.wav");
 	CAudio::Instance() -> Load(AUDIO_TRANS, "resources/trans.wav");
+	CAudio::Instance() -> Load(AUDIO_DEAD, "resources/dead.wav");
 
 	choose_level.Init();
 	clear_level.GoalLocation(level);
@@ -147,6 +148,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_DEAD);
+				}
 			}
 		}
 	}
@@ -163,6 +167,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_DEAD);
+				}
 			}
 		}
 	}
@@ -179,6 +186,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_DEAD);
+				}
 			}
 		}
 	}
@@ -195,6 +205,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_DEAD);
+				}
 			}
 		}
 	}
@@ -330,9 +343,9 @@ void CGameStateRun::OnShow()
 		if (clear) {
 			clear_pic.ShowBitmap();
 		}
-		/*else if (death) {
+		else if (death) {
 			dead_pic.ShowBitmap();
-		}*/
+		}
 	}
 }
 

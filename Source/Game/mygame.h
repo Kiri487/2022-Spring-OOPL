@@ -54,6 +54,7 @@ namespace game_framework {
 		AUDIO_BGM,				// 0
 		AUDIO_WALK,				// 1
 		AUDIO_TRANS,            // 2
+		AUDIO_DEAD,             // 3
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
