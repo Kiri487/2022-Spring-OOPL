@@ -108,6 +108,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	CAudio::Instance() -> Load(AUDIO_WALK, "resources/walking.wav");
 	CAudio::Instance() -> Load(AUDIO_TRANS, "resources/trans.wav");
 	CAudio::Instance() -> Load(AUDIO_DEAD, "resources/dead.wav");
+	CAudio::Instance() -> Load(AUDIO_CLEAR, "resources/clear.wav");
 
 	choose_level.Init();
 	clear_level.GoalLocation(level);
@@ -145,6 +146,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_CLEAR);
+				}
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
@@ -164,6 +168,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_CLEAR);
+				}
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
@@ -183,6 +190,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_CLEAR);
+				}
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
@@ -202,6 +212,9 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (clear_level.IfClear(level, map)) {
 				clear_pic.ToggleAnimation();
+				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+					CAudio::Instance() -> Play(AUDIO_CLEAR);
+				}
 			}
 			else if (death) {
 				dead_pic.ToggleAnimation();
@@ -384,7 +397,7 @@ void CGameStateRun::show_text_by_level() {
 
 		//CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
 
-		CPoint ori = moveori.ReturnOri(level);
+		/*CPoint ori = moveori.ReturnOri(level);
 		for (int i = 0; i < map.width; i++) {
 			for (int j = 0; j < map.height; j++) {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j, std::to_string(i) + ", " + std::to_string(j));
@@ -400,7 +413,7 @@ void CGameStateRun::show_text_by_level() {
 		
 
 		CTextDraw::Print(pDC, 15, 100, "Clear? = " + std::to_string(clear));
-		CTextDraw::Print(pDC, 15, 130, "Dead? = " + std::to_string(death)); 
+		CTextDraw::Print(pDC, 15, 130, "Dead? = " + std::to_string(death)); */
 
 		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
 		
