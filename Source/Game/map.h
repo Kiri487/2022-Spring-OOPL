@@ -3,15 +3,19 @@
 #include <stack>
 #include "Object.h"
 #include "move.h"
-
 class Map {
 private:
 	std::vector<std::vector<Object>> data;
+	std::vector<std::vector<int>> status_data;
 	int level;
 	Move movestep;
+	bool holetag;
+	
 
 public:
 	int width, height;
+	int HoleTag(CPoint boxtag, ObjectType objecttype);
+	int GetValue(int x, int y);
 	void Matrix(int level);
 	void Show();
 	void MoveObject(int level, int move);
