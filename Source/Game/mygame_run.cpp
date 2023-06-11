@@ -208,7 +208,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 	else if (nChar == 'U') {
-		if (clear == false && timer()[0] < 6) {
+		if (clear == false && timer()[0] < '6') {
 			map.Undo();
 			clear = clear_level.IfClear(level, map);
 			death = dead.IfDead(level, map, clear_level);
@@ -356,6 +356,11 @@ void CGameStateRun::show_text_by_level() {
 		CTextDraw::Print(pDC, 15, 695, "LEVEL " + std::to_string(level));
 
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
+		text_art.TextBorder(pDC, 1280, 660, 4, "STEP: " + std::to_string(step_counter(map.MapStep)));
+		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
+		CTextDraw::Print(pDC, 1280, 660, "STEP: " + std::to_string(step_counter(map.MapStep)));
+
+		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
 		text_art.TextBorder(pDC, 1280, 695, 4, "TIME: " + timer());
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 		CTextDraw::Print(pDC, 1280, 695, "TIME: " + timer());
@@ -414,4 +419,8 @@ string CGameStateRun::timer() {
 	}
 
 	return(m_text + ":" + s_text);
+}
+
+int CGameStateRun::step_counter(std::stack<std::vector<std::vector<Object>>> MapStep) {
+	return (MapStep.size() - 1);
 }

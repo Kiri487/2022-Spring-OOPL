@@ -10,6 +10,5 @@ public:
 	bool IfDead(int level, Map map, ClearLevel goal);
 private:
 	bool IfBoxMoviable(int level, Map map, int x, int y, ObjectType box);
-	bool DirectionMoviable(int level, Map map, int x, int y, ObjectType box, int direction);
 	Move move;
 };
