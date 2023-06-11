@@ -37,6 +37,18 @@ bool Dead::IfDead(int level, Map map, ClearLevel goal) {
 		if (Sbox_count == 0) {
 			return true;
 		}
+
+		if (level == 6 && map.ReturnObjectType(4, 1) == Mbox) {
+			return true;
+		}
+	}
+	else if (level == 16) {
+		if (map.ReturnObjectType(5, 3) == Lbox && map.ReturnObjectType(4, 5) == Mbox) {
+			return true;
+		}
+		else if (map.ReturnObjectType(0, 4) == Mbox || map.ReturnObjectType(1, 5) == Mbox) {
+			return true;
+		}
 	}
 
 	for (int i = 0; i < map.width; i++) {
