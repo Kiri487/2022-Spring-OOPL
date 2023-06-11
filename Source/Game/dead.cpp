@@ -20,7 +20,11 @@ bool Dead::IfDead(int level, Map map, ClearLevel goal) {
 			}
 		}
 	}
-
+	else if (level == 4) {
+		if (map.ReturnObjectType(1, 1) == Mbox) {
+			return true;
+		}
+	}
 	else if (level == 6 || level == 11) {
 		for (int i = 0; i < map.width; i++) {
 			for (int j = 0; j < map.height; j++) {
@@ -39,25 +43,54 @@ bool Dead::IfDead(int level, Map map, ClearLevel goal) {
 		for (int j = 0; j < map.height; j++) {
 			if (map.ReturnObjectType(i, j) == Sbox) {
 				if (IfBoxMoviable(level, map, i, j, Sbox) == false) {
-					if (goal.GetValue(i, j) != 1) {
-						return true;
+					if (goal.GetValue(i, j) == 1) {
+						map.data[i][j].SetObject(ImpassibleBlock);
 					}
 				}
 			}
 			else if (map.ReturnObjectType(i, j) == Mbox && Mbox_count == 0) {
 				Mbox_count = 1;
 				if (IfBoxMoviable(level, map, i, j, Mbox) == false) {
-					if ((goal.GetValue(i, j) != 1) || (goal.GetValue(i + 1, j) != 1)) {
-						return true;
+					if ((goal.GetValue(i, j) == 1) && (goal.GetValue(i + 1, j) == 1)) {
+						map.data[i][j].SetObject(ImpassibleBlock);
+						map.data[i + 1][j].SetObject(ImpassibleBlock);
 					}
 				}
 			}
 			else if (map.ReturnObjectType(i, j) == Lbox && Lbox_count == 0) {
 				Lbox_count = 1;
 				if (IfBoxMoviable(level, map, i, j, Lbox) == false) {
-					if ((goal.GetValue(i, j) != 1) || (goal.GetValue(i, j + 1) != 1) || (goal.GetValue(i + 1, j) != 1) || (goal.GetValue(i + 1, j + 1) != 1)) {
-						return true;
+					if ((goal.GetValue(i, j) == 1) && (goal.GetValue(i, j + 1) == 1) && (goal.GetValue(i + 1, j) == 1) && (goal.GetValue(i + 1, j + 1) == 1)) {
+						map.data[i][j].SetObject(ImpassibleBlock);
+						map.data[i][j + 1].SetObject(ImpassibleBlock);
+						map.data[i + 1][j].SetObject(ImpassibleBlock);
+						map.data[i + 1][j + 1].SetObject(ImpassibleBlock);
 					}
+				}
+			}
+		}
+	}
+
+	Mbox_count = 0;
+	Lbox_count = 0;
+
+	for (int i = 0; i < map.width; i++) {
+		for (int j = 0; j < map.height; j++) {
+			if (map.ReturnObjectType(i, j) == Sbox) {
+				if (IfBoxMoviable(level, map, i, j, Sbox) == false) {
+					return true;
+				}
+			}
+			else if (map.ReturnObjectType(i, j) == Mbox && Mbox_count == 0) {
+				Mbox_count = 1;
+				if (IfBoxMoviable(level, map, i, j, Mbox) == false) {
+					return true;
+				}
+			}
+			else if (map.ReturnObjectType(i, j) == Lbox && Lbox_count == 0) {
+				Lbox_count = 1;
+				if (IfBoxMoviable(level, map, i, j, Lbox) == false) {
+					return true;
 				}
 			}
 		}
