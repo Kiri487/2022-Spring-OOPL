@@ -140,18 +140,20 @@ CPoint Map::boxtag(CPoint target, ObjectType boxtype) {
 		}
 		break;
 	case Lbox:
-		if (data[target.x + 1][target.y].ReturnObjectType() == Lbox && data[target.x + 1][target.y + 1].ReturnObjectType() == Lbox && data[target.x][target.y + 1].ReturnObjectType() == Lbox) {
-			boxtag = target;
-		}
-		else if (data[target.x - 1][target.y].ReturnObjectType() == Lbox && data[target.x - 1][target.y + 1].ReturnObjectType() == Lbox && data[target.x][target.y + 1].ReturnObjectType() == Lbox) {
-			boxtag.x = target.x - 1;
-		}
-		else if (data[target.x + 1][target.y ].ReturnObjectType() == Lbox && data[target.x + 1][target.y - 1].ReturnObjectType() == Lbox && data[target.x][target.y - 1].ReturnObjectType() == Lbox) {
-			boxtag.y = target.y - 1;
-		}
-		else {
-			boxtag.x = target.x - 1;
-			boxtag.y = target.y - 1;
+		if (target.x + 1 < width && target.y - 1 >= 0 && target.y + 1 < height && target.y - 1 >= 0) {
+			if (data[target.x + 1][target.y].ReturnObjectType() == Lbox && data[target.x + 1][target.y + 1].ReturnObjectType() == Lbox && data[target.x][target.y + 1].ReturnObjectType() == Lbox) {
+				boxtag = target;
+			}
+			else if (data[target.x - 1][target.y].ReturnObjectType() == Lbox && data[target.x - 1][target.y + 1].ReturnObjectType() == Lbox && data[target.x][target.y + 1].ReturnObjectType() == Lbox) {
+				boxtag.x = target.x - 1;
+			}
+			else if (data[target.x + 1][target.y].ReturnObjectType() == Lbox && data[target.x + 1][target.y - 1].ReturnObjectType() == Lbox && data[target.x][target.y - 1].ReturnObjectType() == Lbox) {
+				boxtag.y = target.y - 1;
+			}
+			else {
+				boxtag.x = target.x - 1;
+				boxtag.y = target.y - 1;
+			}
 		}
 		break;
 	default:

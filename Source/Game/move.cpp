@@ -396,7 +396,7 @@ std::vector<std::vector<Object>> Move::moveLbox(std::vector<std::vector<Object>>
 			data[lboxtag.x + 1][lboxtag.y + 2].SetObject(PassibleBlock);
 			data[lboxtag.x + 1][lboxtag.y + 2].SetImage(CPoint(lboxtag.x + 1, lboxtag.y + 2), ori);
 		}
-		else if (data[lboxtag.x - 1][lboxtag.y + 2].ReturnObjectType() == Mbox) {
+		else if (data[lboxtag.x][lboxtag.y + 2].ReturnObjectType() == Mbox) {
 			data[lboxtag.x - 1][lboxtag.y + 3].SetObject(Mbox);
 			data[lboxtag.x - 1][lboxtag.y + 3].setbox = true;
 			data[lboxtag.x - 1][lboxtag.y + 3].SetImage(CPoint(lboxtag.x - 1, lboxtag.y + 3), ori);
