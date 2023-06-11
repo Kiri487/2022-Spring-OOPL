@@ -109,6 +109,7 @@ namespace game_framework {
 		void show_transition();
 		bool clear = false;
 		bool death = false;
+		bool cheat = false;
 		int step = 0;
 		time_t start_time;
 		time_t end_time;
