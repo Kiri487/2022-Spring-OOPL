@@ -294,10 +294,36 @@ void Map::MoveObject(int level, int movetype) {
 		}
 		else if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == Lbox) {
 			CPoint lboxtag = boxtag(CPoint(bob.x + move.x, bob.y + move.y), Lbox);
-			if (movestep.moviable(data, lboxtag, movetype, height, width) &&
-				movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width) &&
-				movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y + 1), movetype, height, width) &&
-				movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width)) {
+			bool lboxmoviable = false;
+			switch (movetype) {
+			case 0:
+				lboxmoviable = movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y + 1), movetype, height, width) && movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width);
+				break;
+			case 1:
+				lboxmoviable = movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y), movetype, height, width) && movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width);
+				break;
+			case 2:
+				if (lboxtag.y + 1 >= height) {
+					if (level == 14 || level == 15) {
+						lboxtag.x = bob.x - 2;
+						if (data[bob.x - 1][bob.y - 1].ReturnObjectType() == Lbox) {
+							lboxtag.y = bob.y - 1;
+						}
+						lboxmoviable = movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width) && movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width);
+					}
+				}
+				else {
+					lboxmoviable = movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width) && movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width);
+				}
+
+				break;
+			case 3:
+				lboxmoviable = movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y), movetype, height, width) && movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y + 1), movetype, height, width);
+				break;
+			default:
+				break;
+			}
+			if (lboxmoviable) {
 				if (movetype == 0) {
 					if (data[lboxtag.x][lboxtag.y - 1].ReturnObjectType() == Mbox) {
 						if (data[lboxtag.x - 1][lboxtag.y - 1].ReturnObjectType() == Mbox) {
