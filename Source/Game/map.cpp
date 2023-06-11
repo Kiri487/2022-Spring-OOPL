@@ -68,6 +68,27 @@ void Map::Matrix(int level) {
 
 	MapStep.push(GetNowMap());
 	BobStep.push(bob);
+
+	filename = "Resources/other_object" + std::to_string(level) + ".txt";
+	ifs.open(filename);
+
+	int temp_x, temp_y;
+	ifs >> temp_x;
+	ifs >> temp_y;
+
+	this->width = mapsize.x;
+	this->height = mapsize.y;
+
+	status_data.clear();
+	status_data.resize(mapsize.x, std::vector<int>(mapsize.y));
+
+	for (int i = 0; i < mapsize.y; i++) {
+		for (int j = 0; j < mapsize.x; j++) {
+			ifs >> status_data[j][i];
+		}
+	}
+
+	ifs.close();
 }
 
 
@@ -171,14 +192,26 @@ void Map::MoveObject(int level, int movetype) {
 		else if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == Sbox) {
 			bool SMbox = true;
 			if (data[bob.x + 2 * move.x][bob.y + 2 * move.y].ReturnObjectType() == Mbox) {
-				int mboxtag = boxtag(CPoint(bob.x + 2 * move.x, bob.y + 2 * move.y), Mbox).x;
-				if (movestep.moviable(data, CPoint(mboxtag, bob.y + move.y), movetype, height, width) && movestep.moviable(data, CPoint(mboxtag + 1, bob.y + move.y), movetype, height, width)) {
-					data = movestep.moveMbox(data, level, movetype, mboxtag, CPoint(bob.x + move.x, bob.y + move.y), Sbox);
+				CPoint mboxtag = boxtag(CPoint(bob.x + 2 * move.x, bob.y + 2 * move.y), Mbox);
+				if (movestep.moviable(data, CPoint(mboxtag.x, bob.y + move.y), movetype, height, width) && movestep.moviable(data, CPoint(mboxtag.x + 1, bob.y + move.y), movetype, height, width)) {
+					data = movestep.moveMbox(data, level, movetype, mboxtag, CPoint(bob.x + move.x, bob.y + move.y));
 				}
 				else {
 					SMbox = false;
 				}
 				
+			}
+			else if (data[bob.x + 2 * move.x][bob.y + 2 * move.y].ReturnObjectType() == Lbox) {
+				CPoint lboxtag = boxtag(CPoint(bob.x + 2 * move.x, bob.y + 2 * move.y), Lbox);
+				if (movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y), movetype, height, width) &&
+					movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width) &&
+					movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y + 1), movetype, height, width) &&
+					movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width)) {
+					data = movestep.moveLbox(data, level, movetype, lboxtag, CPoint(bob.x + move.x, bob.y + move.y), Character);
+				}
+				else {
+					SMbox = false;
+				}
 			}
 			if (SMbox) {
 				data = movestep.moveSbox(data, level, movetype, bob, Character);
@@ -187,11 +220,75 @@ void Map::MoveObject(int level, int movetype) {
 			
 		}
 		else if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == Mbox) {
-			int mboxtag = boxtag(CPoint(bob.x + move.x, bob.y + move.y), Mbox).x;
-			if (movestep.moviable(data, CPoint(mboxtag, bob.y), movetype, height, width) && movestep.moviable(data, CPoint(mboxtag + 1, bob.y), movetype, height, width)) {
-				data = movestep.moveMSbox(data, level, movetype, mboxtag, bob, Character);
-				data = movestep.moveMbox(data, level, movetype, mboxtag, bob, Character);
-				bob = movestep.bobmove(bob, movetype);
+			CPoint mboxtag = boxtag(CPoint(bob.x + move.x, bob.y + move.y), Mbox);
+			
+			if (movestep.moviable(data, CPoint(mboxtag.x, bob.y), movetype, height, width) && movestep.moviable(data, CPoint(mboxtag.x + 1, bob.y), movetype, height, width)) {
+				
+				if (level == 6) {
+					data = movestep.moveMSbox(data, level, movetype, mboxtag.x, bob, Character);
+					if (mboxtag.x == 2 && mboxtag.y == 2 && bob.x + move.x == mboxtag.x && bob.y + move.y == mboxtag.y) {
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+					}
+					else if (mboxtag.x + 1 == 2 && mboxtag.y == 2 && bob.x + move.x == mboxtag.x + 1 && bob.y + move.y == mboxtag.y) {
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+					}
+					else {
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+						bob = movestep.bobmove(bob, movetype);
+					}
+				}
+				else if (level == 11) {
+					if (data[mboxtag.x + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+						data = movestep.moveSbox(data, level, movetype, mboxtag, PassibleBlock);
+					}
+					if (mboxtag.x == 4 && mboxtag.y == 1 && bob.x + move.x == mboxtag.x && bob.y + move.y == mboxtag.y) {
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+					}
+					else if (mboxtag.x + 1 == 4 && mboxtag.y == 1 && bob.x + move.x == mboxtag.x + 1 && bob.y + move.y == mboxtag.y) {
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+					}
+					else if (mboxtag.x == 5 && mboxtag.y == 3 && bob.x + move.x == mboxtag.x && bob.y + move.y == mboxtag.y) {
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+					}
+					else if (mboxtag.x + 1 == 5 && mboxtag.y == 3 && bob.x + move.x == mboxtag.x + 1 && bob.y + move.y == mboxtag.y) {
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+					}
+					else {
+						data = movestep.moveMSbox(data, level, movetype, mboxtag.x, bob, Character);
+						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+						bob = movestep.bobmove(bob, movetype);
+					}
+				}
+				else {
+					if (data[mboxtag.x + move.x][mboxtag.y + move.y].ReturnObjectType() == Lbox) {
+						CPoint lboxtag = boxtag(CPoint(mboxtag.x + move.x, mboxtag.y + move.y), Lbox);
+						if (movestep.moviable(data, lboxtag, movetype, height, width) &&
+							movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width) &&
+							movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y + 1), movetype, height, width) &&
+							movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width)) {
+							data = movestep.moveLbox(data, level, movetype, lboxtag, CPoint(mboxtag.x, mboxtag.y), PassibleBlock);
+						}
+						else {
+							return;
+						}
+					}
+					else if (data[mboxtag.x + 1 + move.x][mboxtag.y + move.y].ReturnObjectType() == Lbox) {
+						CPoint lboxtag = boxtag(CPoint(mboxtag.x + 1 + move.x, mboxtag.y + move.y), Lbox);
+						if (movestep.moviable(data, lboxtag, movetype, height, width) &&
+							movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y), movetype, height, width) &&
+							movestep.moviable(data, CPoint(lboxtag.x, lboxtag.y + 1), movetype, height, width) &&
+							movestep.moviable(data, CPoint(lboxtag.x + 1, lboxtag.y + 1), movetype, height, width)) {
+							data = movestep.moveLbox(data, level, movetype, lboxtag, CPoint(mboxtag.x + 1, mboxtag.y), PassibleBlock);
+						}
+						else {
+							return;
+						}
+					}
+					data = movestep.moveMSbox(data, level, movetype, mboxtag.x, bob, Character);
+					data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
+					bob = movestep.bobmove(bob, movetype);
+				}
+				
 			}
 		}
 		else if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == Lbox) {
@@ -286,4 +383,27 @@ void Map::MapStepClear() {
 		MapStep.pop();
 		BobStep.pop();
 	}
+}
+
+int Map::HoleTag(CPoint boxtag, ObjectType objecttype){
+	switch (objecttype) {
+	case Mbox:
+		if (GetValue(boxtag.x, boxtag.y) == 2) {
+			return 1;
+		}
+		else if (GetValue(boxtag.x + 1, boxtag.y) == 2) {
+			return 2;
+		}
+		else {
+			return 0;
+		}
+		break;
+	default:
+		return 3;
+	}
+	
+}
+
+int Map::GetValue(int x, int y) {
+	return status_data[x][y];
 }
