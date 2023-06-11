@@ -184,7 +184,7 @@ void Map::MoveObject(int level, int movetype) {
 	default:
 		break;
 	}
-
+	CPoint ori_bob = bob;
 	if (movestep.moviable(data, bob, movetype, height, width)) {
 		if (data[bob.x + move.x][bob.y + move.y].ReturnObjectType() == PassibleBlock) {
 			data = movestep.movenobox(data, level, movetype, bob);
@@ -327,9 +327,10 @@ void Map::MoveObject(int level, int movetype) {
 		}
 	}
 
-	//MapStep.push(GetNowMap());
-	MapStep.push(data);
-	BobStep.push(bob);
+	if (ori_bob != bob) {
+		MapStep.push(data);
+		BobStep.push(bob);
+	}
 }
 
 
