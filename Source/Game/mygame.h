@@ -97,6 +97,7 @@ namespace game_framework {
 		void OnRButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 		void OnRButtonUp(UINT nFlags, CPoint point);	// 處理滑鼠的動作
 		string timer();
+		int step_counter(std::stack<std::vector<std::vector<Object>>> MapStep);
 		int level = 1;
 		bool enter = false;
 	protected:
@@ -108,6 +109,7 @@ namespace game_framework {
 		void show_transition();
 		bool clear = false;
 		bool death = false;
+		int step = 0;
 		time_t start_time;
 		time_t end_time;
 		CMovingBitmap transition;
