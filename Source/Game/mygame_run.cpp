@@ -214,7 +214,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			death = dead.IfDead(level, map, clear_level);
 		}
 	}
-	else if (nChar == VK_TAB && level < 16) {
+	else if (nChar == 'C') {
+		cheat = true;
+	}
+	else if (nChar == VK_TAB && cheat && level < 16) {
 		level ++;
 		if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 			CAudio::Instance() -> Play(AUDIO_TRANS);
@@ -226,6 +229,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		death = false;
 		transition.ToggleAnimation();
 		start_time = time(NULL);
+		cheat = false;
 	}
 }
 
