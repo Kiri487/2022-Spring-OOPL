@@ -137,7 +137,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 	else if (nChar == VK_UP || nChar == 'W') {
-		if (clear == false /*&& death == false*/) {
+		if (clear == false  && death == false) {
 			map.MoveObject(level, 0);
 			clear = clear_level.IfClear(level, map);
 			death = dead.IfDead(level, map, clear_level);
@@ -159,7 +159,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 	else if (nChar == VK_DOWN || nChar == 'S') {
-		if (clear == false /*&& death == false*/) {
+		if (clear == false && death == false) {
 			map.MoveObject(level, 1);
 			clear = clear_level.IfClear(level, map);
 			death = dead.IfDead(level, map, clear_level);
@@ -181,7 +181,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 	else if (nChar == VK_LEFT || nChar == 'A') {
-		if (clear == false /*&& death == false*/) {
+		if (clear == false && death == false) {
 			map.MoveObject(level, 2);
 			clear = clear_level.IfClear(level, map);
 			death = dead.IfDead(level, map, clear_level);
@@ -203,7 +203,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 	else if (nChar == VK_RIGHT || nChar == 'D') {
-		if (clear == false /*&& death == false*/) {
+		if (clear == false && death == false) {
 			map.MoveObject(level, 3);
 			clear = clear_level.IfClear(level, map);
 			death = dead.IfDead(level, map, clear_level);
