@@ -66,7 +66,8 @@ void Map::Matrix(int level) {
 
 	ifs.close();
 
-	MapStep.push(GetNowMap());
+	MapStep.push(data);
+	//MapStep.push(GetNowMap());
 	BobStep.push(bob);
 
 	filename = "Resources/other_object" + std::to_string(level) + ".txt";
@@ -326,7 +327,8 @@ void Map::MoveObject(int level, int movetype) {
 		}
 	}
 
-	MapStep.push(GetNowMap());
+	//MapStep.push(GetNowMap());
+	MapStep.push(data);
 	BobStep.push(bob);
 }
 
@@ -357,17 +359,17 @@ string Map::PrintObjectType(int x, int y) {
 	return type;
 }
 
-std::vector<std::vector<Object>> Map::GetNowMap() {
-
-	std::vector<std::vector<Object>> now_map;
-
-	now_map.clear();
-	now_map.resize(width, std::vector<Object>(height));
-
-	now_map = data;
-
-	return now_map;
-}
+//std::vector<std::vector<Object>> Map::GetNowMap() {
+//
+//	std::vector<std::vector<Object>> now_map;
+//
+//	now_map.clear();
+//	now_map.resize(width, std::vector<Object>(height));
+//
+//	now_map = data;
+//
+//	return now_map;
+//}
 
 void Map::Undo() {
 	if (MapStep.size() != 1) {

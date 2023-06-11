@@ -5,7 +5,7 @@
 #include "move.h"
 class Map {
 private:
-	std::vector<std::vector<Object>> data;
+	
 	std::vector<std::vector<int>> status_data;
 	int level;
 	Move movestep;
@@ -13,6 +13,7 @@ private:
 	
 
 public:
+	std::vector<std::vector<Object>> data;
 	int width, height;
 	int HoleTag(CPoint boxtag, ObjectType objecttype);
 	int GetValue(int x, int y);
@@ -21,7 +22,7 @@ public:
 	void MoveObject(int level, int move);
 	void Undo();
 	void MapStepClear();
-	std::vector<std::vector<Object>> GetNowMap();
+	//std::vector<std::vector<Object>> GetNowMap();
 	CPoint boxtag(CPoint target, ObjectType boxtype);
 	bool boundary(CPoint target, int movetag);
 	CPoint ori;
