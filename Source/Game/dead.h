@@ -1,13 +1,15 @@
 #pragma once
 #include "map.h"
+#include "clear_level.h"
 #include "move.h"
 #include "Object.h"
 
 class Dead {
 public:
 	Dead();
-	bool IfDead(int level, Map map);
+	bool IfDead(int level, Map map, ClearLevel goal);
 private:
-	bool IfBoxoviable(int level, Map map, int x, int y, ObjectType box);
+	bool IfBoxMoviable(int level, Map map, int x, int y, ObjectType box);
+	bool DirectionMoviable(int level, Map map, int x, int y, ObjectType box, int direction);
 	Move move;
 };
