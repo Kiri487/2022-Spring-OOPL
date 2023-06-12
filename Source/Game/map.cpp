@@ -132,11 +132,13 @@ CPoint Map::boxtag(CPoint target, ObjectType boxtype) {
 	switch (boxtype)
 	{
 	case Mbox:
-		if (data[target.x - 1][target.y].ReturnObjectType() == Mbox) {
-			boxtag.x = target.x - 1; // character on box right
-		}	
-		else {
-			boxtag.x = target.x; // character on box left
+		if (target.x - 1 >= 0) {
+			if (data[target.x - 1][target.y].ReturnObjectType() == Mbox) {
+				boxtag.x = target.x - 1; // character on box right
+			}
+			else {
+				boxtag.x = target.x; // character on box left
+			}
 		}
 		break;
 	case Lbox:
