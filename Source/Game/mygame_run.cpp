@@ -73,6 +73,19 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	dead_pic.SetAnimation(55, true);
 	dead_pic.ToggleAnimation();
 
+	over_pic.LoadBitmapByString({
+	"resources/over1.bmp",
+	"resources/over2.bmp",
+	"resources/over3.bmp",
+	"resources/over4.bmp",
+	"resources/over5.bmp",
+	"resources/over6.bmp",
+	"resources/over7.bmp"
+		}, RGB(0, 0, 255));
+	over_pic.SetTopLeft(0, 0);
+	over_pic.SetAnimation(55, true);
+	over_pic.ToggleAnimation();
+
 	background.LoadBitmapByString({
 	"resources/1_background.bmp",
 	"resources/2_background.bmp",
@@ -120,20 +133,18 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == VK_RETURN) {
 
-		if (clear) {
+		if (clear  && level < 16) {
 			level++;
-			if (level <= 16) {
-				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
-					CAudio::Instance() -> Play(AUDIO_TRANS);
-				}
-				clear_level.GoalLocation(level);
-				map.MapStepClear();
-				map.Matrix(level);
-				clear = false;
-				death = false;
-				transition.ToggleAnimation();
-				start_time = time(NULL);
+			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+				CAudio::Instance() -> Play(AUDIO_TRANS);
 			}
+			clear_level.GoalLocation(level);
+			map.MapStepClear();
+			map.Matrix(level);
+			clear = false;
+			death = false;
+			transition.ToggleAnimation();
+			start_time = time(NULL);
 		}
 	}
 	else if (nChar == VK_UP || nChar == 'W') {
@@ -144,8 +155,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 				CAudio::Instance() -> Play(AUDIO_WALK);
 			}
-			if (clear_level.IfClear(level, map)) {
-				clear_pic.ToggleAnimation();
+			if (clear) {
+				if (level == 16) {
+					over_pic.ToggleAnimation();
+				}
+				else {
+					clear_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_CLEAR);
 				}
@@ -166,8 +182,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 				CAudio::Instance() -> Play(AUDIO_WALK);
 			}
-			if (clear_level.IfClear(level, map)) {
-				clear_pic.ToggleAnimation();
+			if (clear) {
+				if (level == 16) {
+					over_pic.ToggleAnimation();
+				}
+				else {
+					clear_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_CLEAR);
 				}
@@ -188,8 +209,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 				CAudio::Instance() -> Play(AUDIO_WALK);
 			}
-			if (clear_level.IfClear(level, map)) {
-				clear_pic.ToggleAnimation();
+			if (clear) {
+				if (level == 16) {
+					over_pic.ToggleAnimation();
+				}
+				else {
+					clear_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_CLEAR);
 				}
@@ -210,8 +236,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 				CAudio::Instance() -> Play(AUDIO_WALK);
 			}
-			if (clear_level.IfClear(level, map)) {
-				clear_pic.ToggleAnimation();
+			if (clear) {
+				if (level == 16) {
+					over_pic.ToggleAnimation();
+				}
+				else {
+					clear_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_CLEAR);
 				}
@@ -354,7 +385,12 @@ void CGameStateRun::OnShow()
 		show_transition();
 
 		if (clear) {
-			clear_pic.ShowBitmap();
+			if (level == 16) {
+				over_pic.ShowBitmap();
+			}
+			else {
+				clear_pic.ShowBitmap();
+			}
 		}
 		else if (death) {
 			dead_pic.ShowBitmap();
