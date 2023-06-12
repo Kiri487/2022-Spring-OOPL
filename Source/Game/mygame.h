@@ -118,6 +118,7 @@ namespace game_framework {
 		CMovingBitmap transition;
 		CMovingBitmap clear_pic;
 		CMovingBitmap dead_pic;
+		CMovingBitmap over_pic;
 		CMovingBitmap background;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
