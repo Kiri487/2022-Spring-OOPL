@@ -132,11 +132,13 @@ CPoint Map::boxtag(CPoint target, ObjectType boxtype) {
 	switch (boxtype)
 	{
 	case Mbox:
-		if (data[target.x - 1][target.y].ReturnObjectType() == Mbox) {
-			boxtag.x = target.x - 1; // character on box right
-		}	
-		else {
-			boxtag.x = target.x; // character on box left
+		if(target.x - 1 >= 0){	
+			if (data[target.x - 1][target.y].ReturnObjectType() == Mbox) {
+				boxtag.x = target.x - 1; // character on box right
+			}	
+			else {
+				boxtag.x = target.x; // character on box left
+			}
 		}
 		break;
 	case Lbox:
@@ -353,7 +355,6 @@ void Map::MoveObject(int level, int movetype) {
 		}
 	}
 
-	//MapStep.push(GetNowMap());
 	MapStep.push(data);
 	BobStep.push(bob);
 }
@@ -385,17 +386,6 @@ string Map::PrintObjectType(int x, int y) {
 	return type;
 }
 
-//std::vector<std::vector<Object>> Map::GetNowMap() {
-//
-//	std::vector<std::vector<Object>> now_map;
-//
-//	now_map.clear();
-//	now_map.resize(width, std::vector<Object>(height));
-//
-//	now_map = data;
-//
-//	return now_map;
-//}
 
 void Map::Undo() {
 	if (MapStep.size() != 1) {
