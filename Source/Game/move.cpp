@@ -101,6 +101,15 @@ std::vector<std::vector<Object>> Move::moveMbox(std::vector<std::vector<Object>>
 	if (level == 6) {
 		if (mboxtag.x == 2 && mboxtag.y == 2) {
 			if (now.x + move.x == mboxtag.x && now.y + move.y == mboxtag.y) {
+				if (data[mboxtag.x + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+				else if (data[mboxtag.x + 1 + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 1 + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+
 				data[mboxtag.x][mboxtag.y].SetObject(Hole);
 				data[mboxtag.x][mboxtag.y].SetImage(CPoint(mboxtag.x, mboxtag.y), ori);
 				data[mboxtag.x + 1][mboxtag.y].SetObject(PassibleBlock);
@@ -123,6 +132,15 @@ std::vector<std::vector<Object>> Move::moveMbox(std::vector<std::vector<Object>>
 		}
 		else if (mboxtag.x + 1 == 2 && mboxtag.y == 2) {
 			if (now.x + move.x == mboxtag.x + 1 && now.y + move.y == mboxtag.y) {
+				if (data[mboxtag.x + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+				else if (data[mboxtag.x + 1 + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 1 + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+
 				data[mboxtag.x][mboxtag.y].SetObject(PassibleBlock);
 				data[mboxtag.x][mboxtag.y].SetImage(CPoint(mboxtag.x, mboxtag.y), ori);
 				data[mboxtag.x + 1][mboxtag.y].SetObject(Hole);
@@ -152,6 +170,15 @@ std::vector<std::vector<Object>> Move::moveMbox(std::vector<std::vector<Object>>
 	else if (level == 11) {
 		if ((mboxtag.x == 4 && mboxtag.y == 1) || (mboxtag.x == 5 && mboxtag.y == 3)) {
 			if (now.x + move.x == mboxtag.x && now.y + move.y == mboxtag.y) {
+				if (data[mboxtag.x + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+				else if (data[mboxtag.x + 1 + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 1 + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+
 				data[mboxtag.x][mboxtag.y].SetObject(Hole);
 				data[mboxtag.x][mboxtag.y].SetImage(CPoint(mboxtag.x, mboxtag.y), ori);
 				data[mboxtag.x + 1][mboxtag.y].SetObject(PassibleBlock);
@@ -174,6 +201,15 @@ std::vector<std::vector<Object>> Move::moveMbox(std::vector<std::vector<Object>>
 		}
 		else if ((mboxtag.x + 1 ==  4 && mboxtag.y == 1) || (mboxtag.x + 1 == 5 && mboxtag.y == 3)) {
 			if (now.x + move.x == mboxtag.x + 1 && now.y + move.y == mboxtag.y) {
+				if (data[mboxtag.x + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+				else if (data[mboxtag.x + 1 + move.x][mboxtag.y + move.y].ReturnObjectType() == Sbox) {
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetObject(Sbox);
+					data[mboxtag.x + 1 + 2 * move.x][mboxtag.y + 2 * move.y].SetImage(CPoint(mboxtag.x + 1 + 2 * move.x, mboxtag.y + 2 * move.y), ori);
+				}
+
 				data[mboxtag.x][mboxtag.y].SetObject(PassibleBlock);
 				data[mboxtag.x][mboxtag.y].SetImage(CPoint(mboxtag.x, mboxtag.y), ori);
 				data[mboxtag.x + 1][mboxtag.y].SetObject(Hole);

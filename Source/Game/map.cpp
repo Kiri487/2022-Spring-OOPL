@@ -230,7 +230,6 @@ void Map::MoveObject(int level, int movetype) {
 			if (movestep.moviable(data, CPoint(mboxtag.x, bob.y), movetype, height, width) && movestep.moviable(data, CPoint(mboxtag.x + 1, bob.y), movetype, height, width)) {
 				
 				if (level == 6) {
-					data = movestep.moveMSbox(data, level, movetype, mboxtag.x, bob, Character);
 					if (mboxtag.x == 2 && mboxtag.y == 2 && bob.x + move.x == mboxtag.x && bob.y + move.y == mboxtag.y) {
 						data = movestep.moveMbox(data, level, movetype, mboxtag, bob);
 					}
@@ -265,6 +264,7 @@ void Map::MoveObject(int level, int movetype) {
 					}
 				}
 				else {
+					data = movestep.moveMSbox(data, level, movetype, mboxtag.x, bob, Character);
 					if (data[mboxtag.x + move.x][mboxtag.y + move.y].ReturnObjectType() == Lbox) {
 						CPoint lboxtag = boxtag(CPoint(mboxtag.x + move.x, mboxtag.y + move.y), Lbox);
 						if (movestep.moviable(data, lboxtag, movetype, height, width) &&
