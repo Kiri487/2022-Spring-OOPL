@@ -274,7 +274,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	else if (nChar == 'C') {
 		cheat = true;
 	}
-	else if (nChar == VK_TAB && cheat && level < 16) {
+	else if (nChar == VK_TAB && cheat && level < 16 && choose_level.state == false) {
 		level ++;
 		if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 			CAudio::Instance() -> Play(AUDIO_TRANS);
