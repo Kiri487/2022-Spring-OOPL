@@ -7,14 +7,13 @@ TextArt::TextArt() {
 }
 
 void TextArt::TextBorder(CDC *pDC, int x, int y, int size, string s) {
-	for (int i = 0; i < size; i++) {
-		CTextDraw::Print(pDC, x, y + i, s);
-		CTextDraw::Print(pDC, x, y - i, s);
-		CTextDraw::Print(pDC, x + i, y, s);
-		CTextDraw::Print(pDC, x - i, y, s);
-		CTextDraw::Print(pDC, x + i, y + i, s);
-		CTextDraw::Print(pDC, x + i, y - i, s);
-		CTextDraw::Print(pDC, x - i, y + i, s);
-		CTextDraw::Print(pDC, x - i, y - i, s);
-	}
+
+	for (int i = (x - size), j = (y - size); i < (x + size) && j < (y + size); i++, j++) {
+		CTextDraw::Print(pDC, i, y, s);
+		CTextDraw::Print(pDC, i, y + size, s);
+		CTextDraw::Print(pDC, i, y - size, s);
+		CTextDraw::Print(pDC, x, j, s);
+		CTextDraw::Print(pDC, x + size, j, s);
+		CTextDraw::Print(pDC, x - size, j, s);
+	}	
 }
