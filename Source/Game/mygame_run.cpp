@@ -324,6 +324,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		start_time = time(NULL);
 		cheat = false;
 	}
+	else if (nChar == VK_ESCAPE && choose_level.state == false) {
+		choose_level.state = true;
+		transition.ToggleAnimation();
+		if (sound_icon.GetFrameIndexOfBitmap() == 0) {
+			CAudio::Instance() -> Play(AUDIO_TRANS);
+		}
+	}
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
