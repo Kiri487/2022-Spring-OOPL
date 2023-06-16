@@ -86,6 +86,19 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	over_pic.SetAnimation(55, true);
 	over_pic.ToggleAnimation();
 
+	timesup_pic.LoadBitmapByString({
+	"resources/timesup1.bmp",
+	"resources/timesup2.bmp",
+	"resources/timesup3.bmp",
+	"resources/timesup4.bmp",
+	"resources/timesup5.bmp",
+	"resources/timesup6.bmp",
+	"resources/timesup7.bmp"
+		}, RGB(0, 0, 255));
+	timesup_pic.SetTopLeft(0, 0);
+	timesup_pic.SetAnimation(55, true);
+	timesup_pic.ToggleAnimation();
+
 	background.LoadBitmapByString({
 	"resources/1_background.bmp",
 	"resources/2_background.bmp",
@@ -143,6 +156,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			map.Matrix(level);
 			clear = false;
 			death = false;
+			timesup = false;
 			transition.ToggleAnimation();
 			start_time = time(NULL);
 		}
@@ -167,7 +181,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				}
 			}
 			else if (death) {
-				dead_pic.ToggleAnimation();
+				if (timesup) {
+					timesup_pic.ToggleAnimation();
+				}
+				else {
+					dead_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_DEAD);
 				}
@@ -194,7 +213,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				}
 			}
 			else if (death) {
-				dead_pic.ToggleAnimation();
+				if (timesup) {
+					timesup_pic.ToggleAnimation();
+				}
+				else {
+					dead_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_DEAD);
 				}
@@ -221,7 +245,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				}
 			}
 			else if (death) {
-				dead_pic.ToggleAnimation();
+				if (timesup) {
+					timesup_pic.ToggleAnimation();
+				}
+				else {
+					dead_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_DEAD);
 				}
@@ -248,7 +277,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				}
 			}
 			else if (death) {
-				dead_pic.ToggleAnimation();
+				if (timesup) {
+					timesup_pic.ToggleAnimation();
+				}
+				else {
+					dead_pic.ToggleAnimation();
+				}
 				if (sound_icon.GetFrameIndexOfBitmap() == 0) {
 					CAudio::Instance() -> Play(AUDIO_DEAD);
 				}
@@ -261,11 +295,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			map.Matrix(level);
 			clear = false;
 			death = false;
+			timesup = false;
 			start_time = time(NULL);
 		}
 	}
 	else if (nChar == 'U') {
-		if (clear == false && timer()[0] < '6') {
+		if (clear == false && timesup == false) {
 			map.Undo();
 			clear = clear_level.IfClear(level, map);
 			death = dead.IfDead(level, map, clear_level);
@@ -284,6 +319,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		map.Matrix(level);
 		clear = false;
 		death = false;
+		timesup = false;
 		transition.ToggleAnimation();
 		start_time = time(NULL);
 		cheat = false;
@@ -338,6 +374,7 @@ void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的
 			map.Matrix(level);
 			clear = false;
 			death = false;
+			timesup = false;
 			transition.ToggleAnimation();
 			start_time = time(NULL);
 			choose_level.state = false;
@@ -393,7 +430,12 @@ void CGameStateRun::OnShow()
 			}
 		}
 		else if (death) {
-			dead_pic.ShowBitmap();
+			if (timesup) {
+				timesup_pic.ShowBitmap();
+			}
+			else {
+				dead_pic.ShowBitmap();
+			}
 		}
 	}
 }
@@ -484,6 +526,11 @@ string CGameStateRun::timer() {
 
 	if (m >= 60) {
 		death = true;
+		if (timesup == false) {
+			CAudio::Instance() -> Play(AUDIO_DEAD);
+			timesup_pic.ToggleAnimation();
+		}
+		timesup = true;
 	}
 
 	return(m_text + ":" + s_text);

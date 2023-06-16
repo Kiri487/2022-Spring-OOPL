@@ -111,6 +111,7 @@ namespace game_framework {
 		void show_transition();
 		bool clear = false;
 		bool death = false;
+		bool timesup = false;
 		bool cheat = false;
 		int step = 0;
 		time_t start_time;
@@ -119,6 +120,7 @@ namespace game_framework {
 		CMovingBitmap clear_pic;
 		CMovingBitmap dead_pic;
 		CMovingBitmap over_pic;
+		CMovingBitmap timesup_pic;
 		CMovingBitmap background;
 		CMovingBitmap music_icon;
 		CMovingBitmap sound_icon;
