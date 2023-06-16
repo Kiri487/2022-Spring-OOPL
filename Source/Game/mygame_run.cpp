@@ -417,23 +417,25 @@ void CGameStateRun::show_text_by_level() {
 	
 	if (level >= 1 && level <= 16) {
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
-		text_art.TextBorder(pDC, 15, 695, 4, "LEVEL " + std::to_string(level));
+		text_art.TextBorder(pDC, 15, 695, 3, "LEVEL " + std::to_string(level));
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 		CTextDraw::Print(pDC, 15, 695, "LEVEL " + std::to_string(level));
 
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
-		text_art.TextBorder(pDC, 1280, 660, 4, "STEP: " + std::to_string(step_counter(map.MapStep)));
+		text_art.TextBorder(pDC, 1280, 660, 3, "STEP: " + std::to_string(step_counter(map.MapStep)));
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 		CTextDraw::Print(pDC, 1280, 660, "STEP: " + std::to_string(step_counter(map.MapStep)));
 
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
-		text_art.TextBorder(pDC, 1280, 695, 4, "TIME: " + timer());
+		text_art.TextBorder(pDC, 1280, 695, 3, "TIME: " + timer());
 		CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 		CTextDraw::Print(pDC, 1280, 695, "TIME: " + timer());
 
-		//CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
+		// debug 用 
 
-		/*CPoint ori = moveori.ReturnOri(level);
+		/*CTextDraw::Print(pDC, 100, 100, std::to_string(map.width) + " " + std::to_string(map.height));
+
+		CPoint ori = moveori.ReturnOri(level);
 		for (int i = 0; i < map.width; i++) {
 			for (int j = 0; j < map.height; j++) {
 				CTextDraw::Print(pDC, ori.x + 83 * i, ori.y + 83 * j, std::to_string(i) + ", " + std::to_string(j));
@@ -449,9 +451,9 @@ void CGameStateRun::show_text_by_level() {
 		
 
 		CTextDraw::Print(pDC, 15, 100, "Clear? = " + std::to_string(clear));
-		CTextDraw::Print(pDC, 15, 130, "Dead? = " + std::to_string(death)); */
+		CTextDraw::Print(pDC, 15, 130, "Dead? = " + std::to_string(death));
 
-		//CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);
+		CTextDraw::Print(pDC, 200, 100, imagedatashow[Character]);*/
 		
 	}
 
