@@ -64,7 +64,7 @@ void CGameStateInit::draw_text() {
 	CDC *pDC = CDDraw::GetBackCDC();
 
 	CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(0, 0, 0));
-	text_art.TextBorder(pDC, 545,632, 4, "Press any key to start");
+	text_art.TextBorder(pDC, 545,632, 3, "Press any key to start");
 
 	CTextDraw::ChangeFontLog(pDC, 15, "Press Start 2P", RGB(255, 255, 255));
 	CTextDraw::Print(pDC, 545, 632, "Press any key to start");
